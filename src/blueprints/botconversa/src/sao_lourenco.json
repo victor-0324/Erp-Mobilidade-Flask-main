@@ -1,0 +1,1345 @@
+{
+    "bairros_proximos": {
+      "Centro": {
+        "categoria": "centro",
+        "perto": ["Todos"],
+        "medio": [],
+        "longe": []
+
+    },
+      "Carioca": {
+        "categoria": "normal",
+        "perto": [
+          "Carioca",
+          "Canaã",
+          "Curtume",
+          "São Lourenço Velho",
+          "Jardim Juliana",
+          "Ramon",
+          "Topomovel",
+          "Jardim das Oliveiras"
+        ],
+        "medio": [
+          "Vale dos Pinheiros",
+          "Solar dos Lagos",
+          "Estação",
+          "Cafundó",
+          "Barreiro",
+          "COHAB Nossa Senhora de Lourdes",
+          "Biquinha",
+          "Porta do Ceu"
+        ],
+        "longe": [
+            "Rodoviaria",
+            "Jardim São Lourenço",
+            "Lagoa Seca",
+            "Serra Azul",
+            "Jardim Serrano",
+            "Palmela",
+            "Nha Chica",
+            "Santa Mônica 3"
+    ]
+    
+    },
+      "Canaã": {
+        "categoria": "normal",
+        "perto": [
+            "Centro",
+            "Carioca",
+            "Curtume",
+            "São Lourenço Velho",
+            "Jardim Juliana",
+            "Ramon",
+            "Topomovel",
+            "Estação",
+            "Jardim das Oliveiras"
+        ],
+        "medio": [
+            "Jardim Juliana",
+            "Cafundó",
+            "Barreiro",
+            "Jardim Paraiso"   
+        ],
+        "longe": [
+            "Vale dos Pinheiros",
+            "Solar dos Lagos",
+            "São Matheus",
+            "Palmela",
+            "Nha Chica",
+            "Santa Mônica 3",
+            "COHAB Nossa Senhora de Lourdes",
+            "Biquinha",
+            "Porta do Ceu",
+            "Vila Caneiro",
+            "Santa Mônica 1",
+            "Santa Mônica 2",
+            "Vila Nova",
+            "Sonda",
+            "Federal",
+            "Rodoviaria",
+            "Jardim São Lourenço",
+            "Serra Azul",
+            "Lagoa Seca",
+            "Jardim Serrano"
+        ]
+      
+    },
+      "Curtume": {
+        "categoria": "normal",
+        "perto": [
+            "Centro",
+            "Carioca",
+            "Curtume",
+            "São Lourenço Velho",
+            "Jardim Juliana",
+            "Ramon",
+            "Topomovel",
+            "Estação"
+        ],
+        "medio": [
+            "São Matheus",
+            "Palmela",
+            "Jardim Juliana",
+            "Estação",
+            "Cafundó",
+            "Barreiro",
+            "COHAB Nossa Senhora de Lourdes",
+            "Sonda",
+            "Jardim Paraiso",
+            "Federal",
+            "Jardim das Oliveiras"
+   ],
+        "longe": [
+            "Vale dos Pinheiros",
+            "Solar dos Lagos",
+            "Nha Chica",
+            "Santa Mônica 3",
+            "Biquinha",
+            "Porta do Ceu",
+            "Vila Caneiro",
+            "Santa Mônica 1",
+            "Santa Mônica 2",
+            "Vila Nova",
+            "Rodoviaria",
+            "Jardim São Lourenço",
+            "Serra Azul",
+            "Lagoa Seca",
+            "Jardim Serrano"
+        ]
+      
+    },
+      "São Lourenço Velho": {
+        "categoria": "normal",
+        "perto": [
+            "Centro",
+            "Jardim Juliana",
+            "Carioca",
+            "Curtume",
+            "Ramon",
+            "Topomovel",
+            "Estação",
+            "Canaã",
+            "São Lourenço Velho",
+            "Vale dos Pinheiros",
+            "Jardim das Oliveiras"
+        ],
+        "medio": [            
+            "Estação",
+            "Vila Caneiro",
+            "Santa Mônica 1",
+            "Santa Mônica 2",
+            "Jardim Paraiso",
+            "Jardim Serrano",
+            "Solar dos Lagos",
+            "Porta do Ceu",
+            "Sonda",
+            "Vila Nova"
+        ],
+        "longe": [
+            "São Matheus",
+            "Palmela",
+            "Nha Chica",
+            "Santa Mônica 3",
+            "Federal",
+            "Rodoviaria",
+            "Jardim São Lourenço",
+            "COHAB Nossa Senhora de Lourdes",
+            "Serra Azul",
+            "Lagoa Seca",
+            "Biquinha",
+            "Cafundó",
+            "Barreiro"
+        ]
+      
+    },
+      "Jardim Juliana": {
+        "categoria": "especial",
+        "perto": [
+          "São Lourenço Velho",
+          "Carioca",
+          "Topomovel",
+          "Estação",
+          "Jardim Juliana",
+          "Vale dos Pinheiros",
+          "Jardim das Oliveiras"
+        ],
+        "medio": [            
+            "Centro",
+            "Canaã",
+            "Curtume",
+            "Ramon",
+            "Solar dos Lagos",
+            "Barreiro",
+            "Biquinha",
+            "Porta do Ceu",
+            "Vila Caneiro",
+            "Santa Mônica 1",
+            "Santa Mônica 2",
+            "Vila Nova",
+            "Sonda",
+            "Jardim Paraiso"
+    ],
+        "longe": [
+            "São Matheus",
+            "Palmela",
+            "Nha Chica",
+            "Santa Mônica 3",
+            "Cafundó",
+            "Federal",
+            "COHAB Nossa Senhora de Lourdes",
+            "Jardim São Lourenço",
+            "Rodoviaria",
+            "Serra Azul",
+            "Lagoa Seca",
+            "Jardim Serrano"
+        ]
+      
+    },
+      "Ramon": {
+        "categoria": "normal",
+        "perto": [
+          "Carioca",
+          "Curtume",
+          "São Lourenço Velho",
+          "Ramon",
+          "Topomovel",
+          "Estação",
+          "Canaã"
+        ],
+        "medio": [
+            "Curtume",
+            "Jardim Juliana",
+            "São Matheus",
+            "Estação",
+            "Cafundó",
+            "Barreiro",
+            "COHAB Nossa Senhora de Lourdes",
+            "Biquinha",
+            "Vila Nova",
+            "Sonda",
+            "Jardim Paraiso",
+            "Federal",
+            "Jardim das Oliveiras",
+            "Rodoviaria",
+            "Jardim São Lourenço",
+            "Serra Azul",
+            "Lagoa Seca"
+    ],
+        "longe": [
+            "Vale dos Pinheiros",
+            "Solar dos Lagos",
+            "São Matheus",
+            "Palmela",
+            "Santa Mônica 3",
+            "Jardim Juliana",
+            "Nha Chica",
+            "Porta do Ceu",
+            "Vila Caneiro",
+            "Santa Mônica 1",
+            "Santa Mônica 2",
+            "Jardim Serrano"
+        ]
+      
+    },
+      "Vale dos Pinheiros": {
+        "categoria": "especial",
+        "perto": [
+          "Solar dos Lagos",
+          "São Matheus",
+          "Palmela",
+          "Nha Chica",
+          "Jardim Juliana",
+          "São Lourenço Velho",
+          "Centro",
+          "Carioca",
+          "São Matheus"
+        ],
+        "medio": [
+            "Canaã",
+            "Curtume",
+            "Topomovel",
+            "Ramon",
+            "Estação",
+            "Porta do Ceu",
+            "Vila Caneiro",
+            "Santa Mônica 1",
+            "Santa Mônica 2",
+            "Vila Nova",
+            "Sonda",
+            "Jardim das Oliveiras"
+        ],
+        "longe": [
+            "COHAB Nossa Senhora de Lourdes",
+            "Cafundó",
+            "Barreiro",
+            "Federal",
+            "Rodoviaria",
+            "Serra Azul",
+            "Lagoa Seca",
+            "Jardim Serrano",
+            "Jardim São Lourenço",
+            "Biquinha",
+            "Jardim Paraiso"
+        ]
+      
+    },
+      "Solar dos Lagos": {
+        "categoria": "especial",
+        "perto": [
+          "Vale dos Pinheiros",
+          "São Matheus",
+          "Palmela",
+          "Nha Chica",
+          "Centro",
+          "São Lourenço Velho",
+          "Porta do Ceu"
+        ],
+        "medio": [            
+            "Carioca",
+            "Canaã",
+            "Topomovel",
+            "Jardim Juliana",
+            "Santa Mônica 3",
+            "Jardim Juliana",
+            "Vila Caneiro",
+            "Santa Mônica 1",
+            "Santa Mônica 2",
+            "Vila Nova",
+            "Sonda",
+            "Jardim Paraiso",
+            "Federal",
+            "Jardim das Oliveiras"
+    ],
+        "longe": [
+            "Curtume",
+            "Ramon",
+            "Estação",
+            "Cafundó",
+            "Barreiro",
+            "COHAB Nossa Senhora de Lourdes",
+            "Biquinha",
+            "Rodoviaria",
+            "Jardim São Lourenço",
+            "Serra Azul",
+            "Lagoa Seca",
+            "Jardim Serrano"
+        ]
+      
+    },
+      "São Matheus": {
+        "categoria": "extremidade",
+        "perto": [
+          "Vale dos Pinheiros",
+          "Solar dos Lagos"
+        ],
+        "medio": [
+            "Centro",
+            "Palmela",
+            "Nha Chica",
+            "Santa Mônica 3",
+            "Estação",
+            "Porta do Ceu",
+            "Vila Caneiro",
+            "Santa Mônica 1",
+            "Santa Mônica 2",
+            "Vila Nova",
+            "Sonda"
+        ],
+        "longe": [
+            "Carioca",
+            "Canaã",
+            "Curtume",
+            "Topomovel",
+            "São Lourenço Velho",
+            "Jardim Juliana",
+            "Ramon",
+            "Jardim Juliana",
+            "Cafundó",
+            "COHAB Nossa Senhora de Lourdes",
+            "Biquinha",
+            "Barreiro",
+            "Federal",
+            "Jardim Paraiso",
+            "Jardim das Oliveiras",
+            "Rodoviaria",
+            "Serra Azul",
+            "Lagoa Seca",
+            "Jardim São Lourenço",
+            "Jardim Serrano"
+        ]
+      
+    },
+      "Palmela": {
+        "categoria": "extremidade",
+        "perto": [
+          "Solar dos Lagos",
+          "São Matheus",
+          "Palmela",
+          "Nha Chica",
+          "Jardim Juliana",
+          "São Lourenço Velho"
+        ],
+        "medio": [
+            "Carioca",
+            "Canaã",
+            "Topomovel",
+            "Jardim Juliana",
+            "Nha Chica",
+            "Santa Mônica 3",
+            "Jardim Juliana",
+            "Estação",
+            "Porta do Ceu",
+            "Santa Mônica 1",
+            "Santa Mônica 2",
+            "Federal",
+            "Jardim das Oliveiras"
+        ],
+        "longe": [
+            "Curtume",
+            "Ramon",
+            "Cafundó",
+            "Barreiro",
+            "COHAB Nossa Senhora de Lourdes",
+            "Biquinha",
+            "Vila Caneiro",
+            "Vila Nova",
+            "Sonda",
+            "Jardim Paraiso",
+            "Rodoviaria",
+            "Jardim São Lourenço",
+            "Lagoa Seca",
+            "Jardim Serrano",
+            "Serra Azul"
+        ]
+      
+    },
+      "Nha Chica": {
+        "categoria": "extremidade",
+        "perto": [
+          "Solar dos Lagos",
+          "São Matheus",
+          "Palmela",
+          "Nha Chica",
+          "Jardim Juliana",
+          "São Lourenço Velho"
+        ],
+        "medio": [
+            "Carioca",
+            "Canaã",
+            "Topomovel",
+            "Santa Mônica 3",
+            "Estação",
+            "Porta do Ceu",
+            "Vila Caneiro",
+            "Santa Mônica 1",
+            "Santa Mônica 2",
+            "Vila Nova",
+            "Sonda",
+            "Jardim Paraiso",
+            "Jardim das Oliveiras"        
+        ],
+        "longe": [
+            "Curtume",
+            "Ramon",
+            "Cafundó",
+            "Barreiro",
+            "COHAB Nossa Senhora de Lourdes",
+            "Biquinha",
+            "Federal",
+            "Rodoviaria",
+            "Serra Azul",
+            "Lagoa Seca",
+            "Jardim São Lourenço",
+            "Jardim Serrano"
+        ]
+      
+    },
+      "Santa Mônica 1": {
+        "categoria": "normal",
+        "perto": [
+          "Santa Mônica 2",
+          "Santa Mônica 3",
+          "Vila Nova",
+          "Sonda",
+          "Jardim Paraiso",
+          "Lagoa Seca",
+          "Porta do Ceu",
+          "Jardim Serrano",
+          "Vila Caneiro"
+        ],
+        "medio": [
+            "Carioca",
+            "São Lourenço Velho",
+            "Vale dos Pinheiros",
+            "Solar dos Lagos",
+            "São Matheus",
+            "Santa Mônica 3",
+            "Jardim Juliana",
+            "Estação",
+            "Santa Mônica 1",
+            "Santa Mônica 2",
+            "Vila Nova",
+            "Jardim Paraiso",
+            "Federal",
+            "Jardim das Oliveiras"        
+        ],
+        "longe": [
+            "Canaã",
+            "Curtume",
+            "Topomovel",
+            "Jardim Juliana",
+            "Ramon",
+            "Palmela",
+            "Nha Chica",
+            "Cafundó",
+            "Barreiro",
+            "COHAB Nossa Senhora de Lourdes",
+            "Biquinha",
+            "Rodoviaria",
+            "Serra Azul",
+            "Jardim São Lourenço"
+        ]
+      
+    },
+      "Santa Mônica 2": {
+        "categoria": "normal",
+        "perto": [
+            "Santa Mônica 2",
+            "Santa Mônica 3",
+            "Vila Nova",
+            "Sonda",
+            "Jardim Paraiso",
+            "Lagoa Seca",
+            "Porta do Ceu",
+            "Jardim Serrano",
+            "Vila Caneiro"
+          ],
+          "medio": [
+              "Carioca",
+              "São Lourenço Velho",
+              "Vale dos Pinheiros",
+              "Solar dos Lagos",
+              "São Matheus",
+              "Santa Mônica 3",
+              "Jardim Juliana",
+              "Estação",
+              "Santa Mônica 1",
+              "Santa Mônica 2",
+              "Vila Nova",
+              "Jardim Paraiso",
+              "Federal",
+              "Jardim das Oliveiras"        
+          ],
+          "longe": [
+              "Canaã",
+              "Curtume",
+              "Topomovel",
+              "Jardim Juliana",
+              "Ramon",
+              "Palmela",
+              "Nha Chica",
+              "Cafundó",
+              "Barreiro",
+              "COHAB Nossa Senhora de Lourdes",
+              "Biquinha",
+              "Rodoviaria",
+              "Serra Azul",
+              "Jardim São Lourenço"
+          ]
+      
+    },
+      "Santa Mônica 3": {
+        "categoria": "extremidade",
+        "perto": [
+            "Santa Mônica 2",
+            "Santa Mônica 3",
+            "Vila Nova",
+            "Sonda",
+            "Jardim Paraiso",
+            "Lagoa Seca",
+            "Porta do Ceu",
+            "Jardim Serrano",
+            "Vila Caneiro"
+          ],
+          "medio": [
+              "Carioca",
+              "São Lourenço Velho",
+              "Vale dos Pinheiros",
+              "Solar dos Lagos",
+              "São Matheus",
+              "Santa Mônica 3",
+              "Jardim Juliana",
+              "Estação",
+              "Santa Mônica 1",
+              "Santa Mônica 2",
+              "Vila Nova",
+              "Jardim Paraiso",
+              "Federal",
+              "Jardim das Oliveiras"        
+          ],
+          "longe": [
+              "Canaã",
+              "Curtume",
+              "Topomovel",
+              "Jardim Juliana",
+              "Ramon",
+              "Palmela",
+              "Nha Chica",
+              "Cafundó",
+              "Barreiro",
+              "COHAB Nossa Senhora de Lourdes",
+              "Biquinha",
+              "Rodoviaria",
+              "Serra Azul",
+              "Jardim São Lourenço"
+          ]
+      
+    },
+      "Estação": {
+        "categoria": "normal",
+        "perto": [
+          "Cafundó",
+          "Barreiro",
+          "COHAB Nossa Senhora de Lourdes",
+          "Biquinha",
+          "Carioca",
+          "Canaã",
+          "Topomovel",
+          "Carioca",
+          "Curtume",
+          "Topomovel",
+          "Ramon",
+          "Federal"
+        ],
+        "medio": [
+            "São Lourenço Velho",
+            "Jardim Juliana",
+            "Porta do Ceu",
+            "Vila Caneiro",
+            "Santa Mônica 1",
+            "Santa Mônica 2",
+            "Vila Nova",
+            "Sonda",
+            "Jardim Paraiso",
+            "Jardim das Oliveiras",
+            "Rodoviaria",
+            "Jardim São Lourenço",
+            "Serra Azul",
+            "Lagoa Seca",
+            "Jardim Serrano"
+        ],
+        "longe": [
+            "Vale dos Pinheiros",
+            "Solar dos Lagos",
+            "São Matheus",
+            "Palmela",
+            "Nha Chica",
+            "Santa Mônica 3",
+            "Jardim Juliana"
+        ]
+      
+    },
+      "Cafundó": {
+        "categoria": "normal",
+        "perto": [
+          "Estação",
+          "Barreiro",
+          "COHAB Nossa Senhora de Lourdes",
+          "Biquinha",
+          "Centro"
+
+        ],
+        "medio": [
+            "Carioca",
+            "Canaã",
+            "Curtume",
+            "Topomovel",
+            "Ramon",
+            "Federal",
+            "Rodoviaria",
+            "Jardim São Lourenço",
+            "Serra Azul"
+        ],
+        "longe": [
+            "Jardim Juliana",
+            "Vale dos Pinheiros",
+            "Solar dos Lagos",
+            "São Matheus",
+            "Palmela",
+            "Nha Chica",
+            "Santa Mônica 3",
+            "Jardim Juliana",
+            "Porta do Ceu",
+            "Vila Caneiro",
+            "Santa Mônica 1",
+            "Santa Mônica 2",
+            "Vila Nova",
+            "Sonda",
+            "Jardim Paraiso",
+            "Jardim Serrano",    
+            "Lagoa Seca",
+            "Jardim das Oliveiras",
+            "São Lourenço Velho"
+        ]
+      
+    },
+      "Barreiro": {
+        "categoria": "normal",
+        "perto": [
+            "Estação",
+            "Barreiro",
+            "COHAB Nossa Senhora de Lourdes",
+            "Biquinha",
+            "Centro"
+  
+          ],
+          "medio": [
+              "Carioca",
+              "Canaã",
+              "Curtume",
+              "Topomovel",
+              "Ramon",
+              "Federal",
+              "Rodoviaria",
+              "Jardim São Lourenço",
+              "Serra Azul"
+          ],
+          "longe": [
+              "Jardim Juliana",
+              "Vale dos Pinheiros",
+              "Solar dos Lagos",
+              "São Matheus",
+              "Palmela",
+              "Nha Chica",
+              "Santa Mônica 3",
+              "Jardim Juliana",
+              "Porta do Ceu",
+              "Vila Caneiro",
+              "Santa Mônica 1",
+              "Santa Mônica 2",
+              "Vila Nova",
+              "Sonda",
+              "Jardim Paraiso",
+              "Jardim Serrano",    
+              "Lagoa Seca",
+              "Jardim das Oliveiras",
+              "São Lourenço Velho"
+          ]
+      
+    },
+      "COHAB Nossa Senhora de Lourdes": {
+        "categoria": "especial",
+        "perto": [
+            "Estação",
+            "Barreiro",
+            "COHAB Nossa Senhora de Lourdes",
+            "Biquinha",
+            "Centro"
+  
+          ],
+          "medio": [
+              "Carioca",
+              "Canaã",
+              "Curtume",
+              "Topomovel",
+              "Ramon",
+              "Federal",
+              "Rodoviaria",
+              "Jardim São Lourenço",
+              "Serra Azul"
+          ],
+          "longe": [
+              "Jardim Juliana",
+              "Vale dos Pinheiros",
+              "Solar dos Lagos",
+              "São Matheus",
+              "Palmela",
+              "Nha Chica",
+              "Santa Mônica 3",
+              "Jardim Juliana",
+              "Porta do Ceu",
+              "Vila Caneiro",
+              "Santa Mônica 1",
+              "Santa Mônica 2",
+              "Vila Nova",
+              "Sonda",
+              "Jardim Paraiso",
+              "Jardim Serrano",    
+              "Lagoa Seca",
+              "Jardim das Oliveiras",
+              "São Lourenço Velho"
+          ]
+      
+    },
+      "Biquinha": {
+        "categoria": "extremidade",
+        "perto": [
+            "Estação",
+            "Barreiro",
+            "COHAB Nossa Senhora de Lourdes",
+            "Biquinha",
+            "Centro"
+  
+          ],
+          "medio": [
+              "Carioca",
+              "Canaã",
+              "Curtume",
+              "Topomovel",
+              "Ramon",
+              "Federal",
+              "Rodoviaria",
+              "Jardim São Lourenço",
+              "Serra Azul"
+          ],
+          "longe": [
+              "Jardim Juliana",
+              "Vale dos Pinheiros",
+              "Solar dos Lagos",
+              "São Matheus",
+              "Palmela",
+              "Nha Chica",
+              "Santa Mônica 3",
+              "Jardim Juliana",
+              "Porta do Ceu",
+              "Vila Caneiro",
+              "Santa Mônica 1",
+              "Santa Mônica 2",
+              "Vila Nova",
+              "Sonda",
+              "Jardim Paraiso",
+              "Jardim Serrano",    
+              "Lagoa Seca",
+              "Jardim das Oliveiras",
+              "São Lourenço Velho"
+          ]
+      
+    },
+      "Porta do Ceu": {
+        "categoria": "normal",
+        "perto": [
+          "Santa Mônica 1",
+          "Santa Mônica 2",
+          "Santa Mônica 3",
+          "Vila Nova",
+          "Vila Caneiro",
+          "Sonda",
+          "Jardim Serrano",
+          "Jardim Paraiso",
+          "Lagoa Seca",
+          "Solar dos Lagos",
+          "São Matheus",
+          "Palmela",
+          "Nha Chica"
+        ],
+        "medio": [],
+        "longe": []
+      
+    },
+      "Vila Caneiro": {
+        "categoria": "normal",
+        "perto": [
+          "Santa Mônica 1",
+          "Santa Mônica 2",
+          "Vila Nova",
+          "Sonda",
+          "Jardim Serrano",
+          "Lagoa Seca",
+          "São Matheus",
+          "Porta do Ceu"
+
+        ],
+        "medio": [
+            "Carioca",
+            "São Lourenço Velho",
+            "Vale dos Pinheiros",
+            "Solar dos Lagos",
+            "Santa Mônica 3",
+            "Estação",
+            "Vila Caneiro",
+            "Jardim Paraiso",
+            "Federal",
+            "Serra Azul",
+            "Lagoa Seca",
+            "Jardim Serrano"
+        ],
+        "longe": [
+            "Canaã",
+            "Curtume",
+            "Topomovel",
+            "Palmela",
+            "Nha Chica",
+            "Jardim Juliana",
+            "Cafundó",
+            "Barreiro",
+            "COHAB Nossa Senhora de Lourdes",
+            "Biquinha",
+            "Ramon",
+            "Jardim das Oliveiras",
+            "Rodoviaria",
+            "Jardim São Lourenço"
+        ]
+    },
+      "Vila Nova": {
+        "categoria": "normal",
+        "perto": [
+            "Santa Mônica 1",
+            "Santa Mônica 2",
+            "Vila Nova",
+            "Sonda",
+            "Jardim Serrano",
+            "Lagoa Seca",
+            "São Matheus",
+            "Porta do Ceu"
+  
+          ],
+          "medio": [
+              "Carioca",
+              "São Lourenço Velho",
+              "Vale dos Pinheiros",
+              "Solar dos Lagos",
+              "Santa Mônica 3",
+              "Estação",
+              "Vila Caneiro",
+              "Jardim Paraiso",
+              "Federal",
+              "Serra Azul",
+              "Lagoa Seca",
+              "Jardim Serrano"
+          ],
+          "longe": [
+              "Canaã",
+              "Curtume",
+              "Topomovel",
+              "Palmela",
+              "Nha Chica",
+              "Jardim Juliana",
+              "Cafundó",
+              "Barreiro",
+              "COHAB Nossa Senhora de Lourdes",
+              "Biquinha",
+              "Ramon",
+              "Jardim das Oliveiras",
+              "Rodoviaria",
+              "Jardim São Lourenço"
+          ]
+      
+    },
+      "Sonda": {
+        "categoria": "normal",
+        "perto": [
+            "Santa Mônica 1",
+            "Santa Mônica 2",
+            "Vila Nova",
+            "Sonda",
+            "Jardim Serrano",
+            "Lagoa Seca",
+            "São Matheus",
+            "Porta do Ceu"
+  
+          ],
+          "medio": [
+              "Carioca",
+              "São Lourenço Velho",
+              "Vale dos Pinheiros",
+              "Solar dos Lagos",
+              "Santa Mônica 3",
+              "Estação",
+              "Vila Caneiro",
+              "Jardim Paraiso",
+              "Federal",
+              "Serra Azul",
+              "Lagoa Seca",
+              "Jardim Serrano"
+          ],
+          "longe": [
+              "Canaã",
+              "Curtume",
+              "Topomovel",
+              "Palmela",
+              "Nha Chica",
+              "Jardim Juliana",
+              "Cafundó",
+              "Barreiro",
+              "COHAB Nossa Senhora de Lourdes",
+              "Biquinha",
+              "Ramon",
+              "Jardim das Oliveiras",
+              "Rodoviaria",
+              "Jardim São Lourenço"
+          ]
+      
+    },
+      "Jardim Paraiso": {
+        "categoria": "normal",
+        "perto": [
+            "Santa Mônica 1",
+            "Santa Mônica 2",
+            "Vila Nova",
+            "Sonda",
+            "Jardim Serrano",
+            "Lagoa Seca",
+            "São Matheus",
+            "Porta do Ceu"
+  
+          ],
+          "medio": [
+              "Carioca",
+              "São Lourenço Velho",
+              "Vale dos Pinheiros",
+              "Solar dos Lagos",
+              "Santa Mônica 3",
+              "Estação",
+              "Vila Caneiro",
+              "Jardim Paraiso",
+              "Federal",
+              "Serra Azul",
+              "Lagoa Seca",
+              "Jardim Serrano"
+          ],
+          "longe": [
+              "Canaã",
+              "Curtume",
+              "Topomovel",
+              "Palmela",
+              "Nha Chica",
+              "Jardim Juliana",
+              "Cafundó",
+              "Barreiro",
+              "COHAB Nossa Senhora de Lourdes",
+              "Biquinha",
+              "Ramon",
+              "Jardim das Oliveiras",
+              "Rodoviaria",
+              "Jardim São Lourenço"
+          ]      
+    },
+      "Federal": {
+        "categoria": "normal",
+        "perto": [
+            "Centro",
+            "Federal",
+            "Serra Azul",
+            "Jardim São Lourenço",
+            "Rodoviaria",
+            "Vila Nova"
+  
+          ],
+          "medio": [
+              "Topomovel",
+              "São Lourenço Velho",
+              "Estação",
+              "Jardim das Oliveiras",
+              "Carioca",
+              "Cafundó",
+              "Barreiro",
+              "Biquinha",
+              "Vila Caneiro",
+              "Santa Mônica 1",
+              "Santa Mônica 2"
+          ],
+          "longe": [
+              "Canaã",
+              "Curtume",
+              "Jardim Serrano",
+              "Lagoa Seca",
+              "Jardim Paraiso",
+              "COHAB Nossa Senhora de Lourdes",
+              "Porta do Ceu",
+              "Sonda",
+              "Jardim Juliana",
+              "Ramon",
+              "Vale dos Pinheiros",
+              "Solar dos Lagos",
+              "São Matheus",
+              "Palmela",
+              "Nha Chica",
+              "Santa Mônica 3",
+              "Jardim Juliana"
+          ]
+      
+    },
+      "Jardim das Oliveiras": {
+        "categoria": "normal",
+        "perto": [
+            "Centro",
+            "Jardim Juliana",
+            "Carioca",
+            "Curtume",
+            "Ramon",
+            "Topomovel",
+            "Estação",
+            "Canaã",
+            "São Lourenço Velho",
+            "Vale dos Pinheiros",
+            "Jardim das Oliveiras"
+        ],
+        "medio": [            
+            "Estação",
+            "Vila Caneiro",
+            "Santa Mônica 1",
+            "Santa Mônica 2",
+            "Jardim Paraiso",
+            "Jardim Serrano",
+            "Solar dos Lagos",
+            "Porta do Ceu",
+            "Sonda",
+            "Vila Nova"
+        ],
+        "longe": [
+            "São Matheus",
+            "Palmela",
+            "Nha Chica",
+            "Santa Mônica 3",
+            "Federal",
+            "Rodoviaria",
+            "Jardim São Lourenço",
+            "COHAB Nossa Senhora de Lourdes",
+            "Serra Azul",
+            "Lagoa Seca",
+            "Biquinha",
+            "Cafundó",
+            "Barreiro"
+        ]      
+    },
+      "Rodoviaria": {
+        "categoria": "especial",
+        "perto": [
+          "Biquinha",
+          "Centro",
+          "Federal",
+          "Serra Azul",
+          "Jardim São Lourenço",
+          "Rodoviaria"
+        ],
+        "medio": [
+            "Topomovel",
+            "São Lourenço Velho",
+            "Estação",
+            "Jardim das Oliveiras"        
+        ],
+        "longe": [
+            "Carioca",
+            "Canaã",
+            "Curtume",
+            "Jardim Serrano",
+            "Lagoa Seca",
+            "Jardim Paraiso",
+            "Cafundó",
+            "Barreiro",
+            "COHAB Nossa Senhora de Lourdes",
+            "Porta do Ceu",
+            "Vila Caneiro",
+            "Santa Mônica 1",
+            "Santa Mônica 2",
+            "Vila Nova",
+            "Sonda",
+            "Jardim Juliana",
+            "Ramon",
+            "Vale dos Pinheiros",
+            "Solar dos Lagos",
+            "São Matheus",
+            "Palmela",
+            "Nha Chica",
+            "Santa Mônica 3",
+            "Jardim Juliana"
+        ]
+    },
+      "Jardim São Lourenço": {
+        "categoria": "extremidade",
+        "perto": [
+            "Biquinha",
+            "Centro",
+            "Federal",
+            "Serra Azul",
+            "Jardim São Lourenço",
+            "Rodoviaria"  
+          ],
+          "medio": [
+              "Topomovel",
+              "São Lourenço Velho",
+              "Estação",
+              "Jardim das Oliveiras"
+          ],
+          "longe": [
+              "Carioca",
+              "Canaã",
+              "Curtume",
+              "Jardim Serrano",
+              "Lagoa Seca",
+              "Jardim Paraiso",
+              "Cafundó",
+              "Barreiro",
+              "COHAB Nossa Senhora de Lourdes",
+              "Porta do Ceu",
+              "Vila Caneiro",
+              "Santa Mônica 1",
+              "Santa Mônica 2",
+              "Vila Nova",
+              "Sonda",
+              "Jardim Juliana",
+              "Ramon",
+              "Vale dos Pinheiros",
+              "Solar dos Lagos",
+              "São Matheus",
+              "Palmela",
+              "Nha Chica",
+              "Santa Mônica 3",
+              "Jardim Juliana"
+          ]
+      
+    },
+      "Serra Azul": {
+        "categoria": "especial",
+        "perto": [
+            "Centro",
+            "Federal",
+            "Serra Azul",
+            "Jardim São Lourenço",
+            "Rodoviaria",
+            "Vila Nova"
+  
+          ],
+          "medio": [
+              "Topomovel",
+              "São Lourenço Velho",
+              "Estação",
+              "Jardim das Oliveiras",
+              "Carioca",
+              "Cafundó",
+              "Barreiro",
+              "Vila Caneiro",
+              "Santa Mônica 1",
+              "Santa Mônica 2"
+          ],
+          "longe": [
+              "Canaã",
+              "Curtume",
+              "Jardim Serrano",
+              "Lagoa Seca",
+              "Jardim Paraiso",
+              "COHAB Nossa Senhora de Lourdes",
+              "Porta do Ceu",
+              "Sonda",
+              "Jardim Juliana",
+              "Ramon",
+              "Vale dos Pinheiros",
+              "Solar dos Lagos",
+              "São Matheus",
+              "Palmela",
+              "Nha Chica",
+              "Santa Mônica 3",
+              "Jardim Juliana",
+              "Biquinha"
+          ]
+      
+    },
+      "Lagoa Seca": {
+        "categoria": "especial",
+        "perto": [
+            "Santa Mônica 1",
+            "Santa Mônica 2",
+            "Vila Nova",
+            "Sonda",
+            "Jardim Serrano",
+            "Lagoa Seca",
+            "São Matheus",
+            "Porta do Ceu",
+            "Vila Caneiro",
+            "Lagoa Seca",
+            "Jardim Serrano"  
+          ],
+          "medio": [
+              "Carioca",
+              "São Lourenço Velho",
+              "Vale dos Pinheiros",
+              "Solar dos Lagos",
+              "Santa Mônica 3",
+              "Estação",
+              "Jardim Paraiso",
+              "Federal"
+          ],
+          "longe": [
+              "Canaã",
+              "Curtume",
+              "Topomovel",
+              "Palmela",
+              "Nha Chica",
+              "Jardim Juliana",
+              "Cafundó",
+              "Barreiro",
+              "COHAB Nossa Senhora de Lourdes",
+              "Biquinha",
+              "Ramon",
+              "Jardim das Oliveiras",
+              "Rodoviaria",
+              "Jardim São Lourenço",
+              "Serra Azul"
+          ]
+      
+    },
+      "Jardim Serrano": {
+        "categoria": "especial",
+        "perto": [
+            "Santa Mônica 1",
+            "Santa Mônica 2",
+            "Vila Nova",
+            "Sonda",
+            "Jardim Serrano",
+            "Lagoa Seca",
+            "São Matheus",
+            "Porta do Ceu",
+            "Vila Caneiro",
+            "Lagoa Seca",
+            "Jardim Serrano"  
+          ],
+          "medio": [
+              "Carioca",
+              "São Lourenço Velho",
+              "Vale dos Pinheiros",
+              "Solar dos Lagos",
+              "Santa Mônica 3",
+              "Estação",
+              "Jardim Paraiso",
+              "Federal"
+          ],
+          "longe": [
+              "Canaã",
+              "Curtume",
+              "Topomovel",
+              "Palmela",
+              "Nha Chica",
+              "Jardim Juliana",
+              "Cafundó",
+              "Barreiro",
+              "COHAB Nossa Senhora de Lourdes",
+              "Biquinha",
+              "Ramon",
+              "Jardim das Oliveiras",
+              "Rodoviaria",
+              "Jardim São Lourenço",
+              "Serra Azul"
+          ]
+      }
+    }
+  }

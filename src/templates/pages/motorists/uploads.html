@@ -1,0 +1,54 @@
+{% extends 'layouts/dashboard.html' %}
+
+{% macro upload() %}
+<div class="col">
+  <div class="card card-primary">
+      <div class="card-header">
+        <h3 class="card-title">Uploads</h3>
+      </div>
+      <form method="post" enctype="multipart/form-data">
+        <div class="card-body">
+          <div class="form-group">
+            <label for="exampleInputFile">Selecione os arquivos</label>
+            <div class="input-group">
+              <div class="custom-file">
+                <input 
+                  type="file" 
+                  class="custom-file-input" 
+                  name="image[]" 
+                  multiple="multiple">
+                  >
+                <label class="custom-file-label" for="exampleInputFile">Selecionar</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button type="submit" class="btn btn-primary float-right">Processar</button>
+        </div>
+      </form>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro mostrar() %}
+<div class="col">
+    {{card_primary(
+
+        title="Exemplo", 
+
+        card_tools=buttons(
+            link="novo",
+            button_type="button",
+            _class="btn-default",
+            button_text="Novo"),
+
+        card_body=_body()
+        )}}
+</div>
+{% endmacro %}
+
+
+{% block content %}
+{{ (upload()) }}
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'layouts/dashboard.html' %}
+
+{% macro _body() %}
+<div class="table-responsive p-0">
+      <table class="table table-hover text-nowrap">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Etiqueta</th>
+          <th>Opções</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for driver in motorists %}
+        <tr>
+          <td>{{driver.id}}</td>
+          <td>{{driver.name}}</td>
+          <td>{{ driver.data_json.get('tag') }}</td>
+          <td>
+            <div class="input-group-prepend align-center" >
+              <button type="button" class="btn btn-default dropdown-toggle " data-toggle="dropdown">
+                Action
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="edit/{{ driver.id }}">Editar</a>
+                <a class="dropdown-item" href="revenues/show/{{ driver.id }}">Faturamento</a>
+                <a class="dropdown-item" href="delete/{{ driver.id }}">Excluir</a>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+
+{% endmacro %}
+{% macro mostrar() %}
+<div class="col">
+
+    {{card_primary(
+        _class="",
+        title="Motoristas", 
+
+        card_tools=buttons(
+            link="create",
+            button_type="button",
+            _class="btn-default",
+            button_text="Novo"),
+
+        card_body=_body()
+        )}}
+</div>
+{% endmacro %}
+{% block content %}
+{{ (mostrar()) }}
+{% endblock %}

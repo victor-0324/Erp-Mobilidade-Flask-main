@@ -1,0 +1,117 @@
+{% extends 'layouts/dashboard.html' %}
+
+{% macro _form() %}
+<form method="post">
+  <div class="form-group">
+    <div class="row">
+      <div class="col-lg p-1">
+        {{ date_range(name="daterange") }}
+      </div>  
+      <div class="col-lg-4 p-1">
+        <select class="select2" name="option">
+          {% for item in motorists %}
+            <option>{{ item }}</option>
+          {% endfor %}
+          </select>
+      </div>
+      <div class="p-1">
+        <button type="submit" class="btn btn-primary float-right">Pesquisar</button>
+      </div>
+    </div>
+  </div>
+</form>
+{% endmacro %}
+
+{% macro grupos() %}
+<div class="table-responsive">
+  <table class="table table-hover text-nowrap">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Tag</th>
+        <th>Campo</th>
+        <th>Condição</th>
+        <th>Valor</th>
+        <th>Definir</th>
+        <th>Valor</th>
+        <th>Opções</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for rule in rules %}
+      <tr>
+        <td>{{ rule.name }}</td>
+        <td>
+          <div class="align-self-center">
+            <input type="text" class="form-control" value="{{ rule.data_json['tag']}}" disabled>
+          </div>
+        </td>
+        <td>
+          <div class="align-self-center">
+            <input type="text" class="form-control" value="{{ rule.data_json['field']}}" disabled>
+          </div>
+        </td>
+        <td>
+          <div class="align-self-center">
+            <input type="text" class="form-control" value="{{ rule.data_json['condition']}}" disabled>
+          </div>
+        </td>
+        <td> 
+          <input type="text" class="form-control" value="{{ rule.data_json['condition_value']}}" disabled>
+        </td> 
+        <td>
+          <div class="align-self-center">
+            <input type="text" class="form-control" value="{{ rule.data_json['rule']}}" disabled>
+          </div>
+        </td>
+        <td> 
+          <input type="text" class="form-control" value="{{ rule.data_json['rule_value']}}" disabled>
+        </td> 
+        <td>
+          <div class="align-self-center" >
+            <button type="button" class="btn btn-default dropdown-toggle " data-toggle="dropdown">
+              Opções
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="edit/{{ rule.id }}">Editar</a>
+              <a class="dropdown-item" href="delete/{{ rule.id }}">Deletar</a>
+            </div>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endmacro %}
+
+
+{% macro _content() %}
+
+<div class="col">
+  {{ card_primary(
+    title="Fechamento", 
+    card_body=_form()
+    ) }}
+</div>
+<div class="col">
+  {{card_primary(
+      _class="",
+      title="Regras", 
+
+      card_tools=buttons(
+          link="create",
+          button_type="button",
+          _class="btn-default",
+          button_text="Novo"),
+
+      card_body=grupos()
+      )}}
+</div>
+{% endmacro %}
+
+{% block content %}
+{{ (_content()) }}
+{% endblock %}
+
+

@@ -1,0 +1,80 @@
+{% extends 'layouts/dashboard.html' %}
+{% macro  _body() %}
+<div class="row">
+  <!-- text input -->
+  <div class="form-group  col-lg" >
+    <label>Nome</label>
+    <input type="text" class="form-control" style="pointer-events: none;" name="rule_name" value="{{rule.name}}">
+  </div>
+  <!-- text input -->
+  <div class="form-group col-lg">
+      <label for="exampleInputEmail1">Regra de faturamento.</label>
+      <select class="form-control select2" style="width: 100%; pointer-events: none;" name="rule_type">
+          <option{% if rule.rule_type == 'Meta' %}selected{% endif %}>Meta</option>
+          <option{% if rule.rule_type == 'Porcentagem' %}selected{% endif %}>Porcentagem</option>
+    </select>
+  </div>
+</div>
+<div class="row">
+  <div class="form-group col-lg">
+    <select class="form-control select2" name="tag">
+      <option {% if rule.data_json.get('tag') == 'Padrão' %}selected{% endif %}>Padrão</option>
+      <option {% if rule.data_json.get('tag') == 'Gerente' %}selected{% endif %}>Gerente</option>
+      <option {% if rule.data_json.get('tag') == 'Lady driver' %}selected{% endif %}>Lady driver</option>
+    </select>
+  </div>
+  <div class="form-group col-lg">
+    <select class="form-control select2" name="field">
+      <option {% if rule.data_json.get('field') == 'Fat. do Motorista' %}selected{% endif %}>Fat. do Motorista</option>
+
+    </select>
+  </div>
+  <div class="form-group col-lg">
+    <select class="form-control select2" name="condition">
+      <option {% if rule.data_json.get('condition') == 'Maior que' %}selected{% endif %}>Maior que</option>
+      <option {% if rule.data_json.get('condition') == 'Menor que' %}selected{% endif %}>Menor que</option>
+    </select>    
+  </div>
+  <div class="form-group col-lg">
+    <input type="text" class="form-control" value="{{rule.data_json.get('condition_value')}}" name="condition_value">
+  </div>
+  <div class="form-group col-lg">
+    <select class="form-control select2" name="rule">
+      <option {% if rule.data_json.get('rule') == 'Porcentagem' %}selected{% endif %}>Porcentagem</option>
+      <option {% if rule.data_json.get('rule') == 'Cobrar' %}selected{% endif %}>Cobrar</option>
+    </select>
+  </div>
+  <div class="form-group col-lg">
+    <input type="text" class="form-control" value="{{rule.data_json.get('rule_value')}}" name="rule_value">
+  </div>
+</div>
+{% endmacro %}
+{% macro mostrar() %}
+<div class="col">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    {{card_primary(
+        _class="card-primary",
+        title="Regras", 
+        is_form=True,
+        card_footer=buttons(
+            button_type="submit",
+            _class="btn-default float-right",
+            button_text="Confirmar"),
+
+        card_body=_body()
+        )}}
+</div>
+{% endmacro %}
+
+{% block content %}
+{{ (mostrar()) }}
+{% endblock %}

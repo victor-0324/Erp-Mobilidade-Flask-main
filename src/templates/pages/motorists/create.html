@@ -1,0 +1,162 @@
+{% extends 'layouts/dashboard.html' %}
+
+{% macro _body() %}
+<div class="row">
+  <div class="col-lg-4 p-1">
+  <label for="exampleInputEmail1">Nome do Motorista</label>
+  
+  <input type="text" class="form-control" placeholder="Nome Completo" name="name">
+  </div>
+  <div class="col-lg-4 p-1">
+    <label for="exampleInputEmail1">Nome na Base</label>
+    <input type="text" class="form-control" placeholder="NOME NA BASE">
+  </div>
+  <div class="col-lg-4 p-1">
+    <label for="exampleInputEmail1">Código da Prefeitura</label>
+    <input type="text" class="form-control" placeholder="AP4534">
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-lg-2 p-1">
+    <label for="exampleInputEmail1">CPF</label>
+    <input type="text" class="form-control" placeholder="000.000.000-00">
+  </div>
+
+  <div class="col-lg-2 p-1">
+    <label for="exampleInputEmail1">RG</label>
+    <input type="text" class="form-control" placeholder="00.000.000-0">
+  </div>
+
+  <div class="col-lg-1 p-1">
+    <label>Emissor</label>
+    <input type="text" class="form-control" placeholder="SSP-MG">
+  </div>
+
+  <div class="col-lg-3 p-1">
+    <label styles="display: inline-block;">D. Nascimento</label>
+    <input type="text" class="form-control" placeholder="00/00/0000">
+  </div>
+
+  <div class="col-lg-4 p-1">
+    <label for="exampleInputEmail1">Gênero</label>
+    <select class="form-control select2" name="">
+        <option>Masculino</option>
+        <option>Feminino</option>
+        <option>Outro</option>
+      </select>  
+  </div>
+
+</div>
+
+<div class="row">
+  <div class="col-lg-2 p-1">
+    <label for="exampleInputEmail1">CNH</label>
+    <input type="text" class="form-control" placeholder="00000000000">
+  </div>
+
+  <div class="col-lg-2 p-1">
+    <label for="exampleInputEmail1">Modelo do Veículo</label>
+    <input type="text" class="form-control" placeholder="Sedan">
+  </div>
+
+  <div class="col-lg-1 p-1">
+    <label for="exampleInputEmail1">Marca</label>
+    <input type="text" class="form-control" placeholder="Fiat">
+  </div>
+
+  <div class="col-lg-2 p-1">
+    <label>Placa</label>
+    <input type="text" class="form-control" placeholder="XXX-0000">
+  </div>
+  
+  <div class="col-lg-1 p-1">
+    <label for="exampleInputEmail1">Cor</label>
+    <input type="text" class="form-control" placeholder="Preto">
+  </div>
+
+
+  <div class="col-lg-1 p-1">
+    <label>Ano</label>
+    <input type="text" class="form-control" placeholder="2024">
+  </div>
+
+  <div class="col-lg-1 p-1">
+    <label>Passageiros</label>
+    <input type="text" class="form-control" placeholder="4">
+  </div>
+
+  <div class="col-lg-2 p-1">
+    <label for="exampleInputEmail1">Porta Malas</label>
+    <select class="form-control select2" style="width: 100%;" name="">
+        <option>Comum</option>
+        <option>Grande</option>
+        <option>Pequeno</option>
+      </select>
+  </div>
+
+</div>
+
+<div class="row">
+  <div class="col-lg-3 p-1">
+    <label for="exampleInputEmail1">Endereço</label>
+    <input type="text" class="form-control" placeholder="Rua dos Andradas">
+  </div>
+
+  <div class="col-lg-1 p-1">
+    <label for="exampleInputEmail1">N*</label>
+    <input type="text" class="form-control" placeholder="149">
+  </div>
+
+  <div class="col-lg-2 p-1">
+    <label for="exampleInputEmail1">Bairro</label>
+    <input type="text" class="form-control" placeholder="Centro">
+  </div>
+
+  <div class="col-lg-2 p-1">
+    <label>Cidade</label>
+    <input type="text" class="form-control" placeholder="São Lourenço">
+  </div>
+
+
+  <div class="col-lg-2 p-1">
+    <label>E-mail</label>
+    <input type="text" class="form-control" placeholder="otupa@gmail.com">
+  </div>
+
+  <div class="col-lg-2 p-1">
+    <label>Telefone/Whatsapp</label>
+    <input type="text" class="form-control" placeholder="35988942174">
+  </div>
+
+</div>
+<div class="row">
+<div class="col-lg p-1">
+  <label>Etiqueta</label>
+  <select class="form-control select2" name="tag">
+    <option>Padrão</option>
+    <option>Gerente</option>
+    <option>Lady driver</option>
+  </select>
+</div>
+</div>
+{% endmacro %}
+
+{% block content %}
+<div class="col">
+
+{{ card_primary(
+
+    title="Cadastrar/Editar Motorista", 
+    card_body=_body(),
+    card_footer=buttons(
+      link="/motorists",
+      button_type="submit",
+      _class="btn-primary float-right",
+      button_text="Novo"),
+    is_form=True)}}
+
+</div>
+{% endblock %}
+

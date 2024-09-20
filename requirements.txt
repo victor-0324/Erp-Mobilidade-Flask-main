@@ -1,0 +1,12 @@
+Flask
+Flask_Login
+marshmallow
+python-dotenv
+SQLAlchemy
+Werkzeug
+pandas
+pillow
+pymysql
+requests
+gunicorn
+fuzzywuzzy

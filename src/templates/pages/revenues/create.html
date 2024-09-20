@@ -1,0 +1,80 @@
+{% extends 'layouts/dashboard.html' %}
+{% macro  _body() %}
+<div class="row">
+  <!-- text input -->
+  <div class="form-group  col-lg" >
+    <label>Nome</label>
+    <input type="text" class="form-control" name="rule_name">
+  </div>
+  <!-- text input -->
+  <div class="form-group col-lg">
+      <label for="exampleInputEmail1">Regra de faturamento.</label>
+      <select class="form-control select2" name="rule_type">
+          <option>Selecione</option>
+          <option>Meta</option>
+          <option>Porcentagem</option>
+    </select>
+  </div>
+</div>
+<div class="row">
+  <div class="form-group col-lg">
+    <select class="form-control select2" name="tag">
+      <option>Padrão</option>
+      <option>Gerente</option>
+      <option>Lady driver</option>
+    </select>
+  </div>
+  <div class="form-group col-lg">
+    <select class="form-control select2" name="field">
+      <option>Fat. do Motorista</option>
+    </select>
+  </div>
+  <div class="form-group col-lg">
+    <select class="form-control select2" name="condition">
+      <option>Maior que</option>
+      <option>Menor que</option>
+    </select>    
+  </div>
+  <div class="form-group col-lg">
+    <input type="number" class="form-control" name="condition_value">
+  </div>
+  <div class="form-group col-lg">
+    <select class="form-control select2" name="rule">
+      <option>Porcentagem</option>
+      <option>Cobrar</option>
+    </select>
+  </div>
+  <div class="form-group col-lg" >
+    <input type="number" class="form-control" name="rule_value">
+  </div>
+</div>
+{% endmacro %}
+{% macro mostrar() %}
+<div class="col">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    {{card_primary(
+        _class="card-primary",
+        title="Regras", 
+        is_form=True,
+        card_footer=buttons(
+            button_type="submit",
+            _class="btn-default float-right",
+            button_text="Confirmar"),
+
+        card_body=_body()
+        )}}
+</div>
+{% endmacro %}
+
+{% block content %}
+{{ (mostrar()) }}
+{% endblock %}
