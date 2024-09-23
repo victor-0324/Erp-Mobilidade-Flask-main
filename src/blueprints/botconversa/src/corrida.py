@@ -5,7 +5,7 @@
 import requests
 
 from ..querys import BotQuerys
-
+from ..bairros_proximos import bairros_proximos
 
 class Corrida:
     """Processo de envio de corridas"""
@@ -16,7 +16,6 @@ class Corrida:
         self.telefone = telefone
 
     def endereco_em_geolocalizacao(self):
-
         api_token = 'pk.f17234d51a1015ab3c5ecb138de627c9'
         url = f'https://us1.locationiq.com/v1/search?key={api_token}&q={self.embarque}&format=json&'
 
@@ -27,7 +26,6 @@ class Corrida:
         return geolocalizacao
 
     def motorista_mais_proximo(self):
-        
         # verifica se tem um motorista no bairro que a pessoa pediu
 
         motorista = BotQuerys().motorista_da_vez(self.bairro_embarque)
@@ -52,6 +50,5 @@ class Corrida:
         )
 
         return None
-
 
 

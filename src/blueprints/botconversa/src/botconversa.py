@@ -15,6 +15,7 @@ def dados_usuario_por_telefone(telefone):
         headers=api_key_,
         timeout=30
     ).json()
+    
     return data_driver
 
 

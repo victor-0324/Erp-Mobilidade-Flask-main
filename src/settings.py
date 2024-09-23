@@ -24,8 +24,8 @@ class Config:
     ALLOWED_EXTENSIONS = {
         "txt",
     }
-    # DATABASE_CONNECTION = os.environ.get("DATABASE_CONNECTION")
-    DATABASE_CONNECTION = "mariadb+pymysql://root:159753@127.0.0.1:3306/mobilidade"
+    DATABASE_CONNECTION = os.environ.get("DATABASE_CONNECTION")
+    # DATABASE_CONNECTION = "mariadb+pymysql://root:159753@127.0.0.1:3306/mobilidade"
 
 class TestingConfig(Config):
     """Ambiente de testes"""

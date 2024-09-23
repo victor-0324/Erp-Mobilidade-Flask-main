@@ -3,7 +3,11 @@
 
 from src.database.db_connection import db_connector
 from .models import DriverQueue
+from math import radians
+from sqlalchemy import func, Float
 from .bairros import bairros
+import requests
+
 
 class BotQuerys:
     """A Consult if name alredy exits"""
@@ -75,18 +79,43 @@ class BotQuerys:
             connection.session.delete(check_name)
             connection.session.commit()
 
-@classmethod
-@db_connector
-def motorista_da_vez(cls, connection, bairro):
-    """Seleciona e remove o motorista que está há mais tempo na fila em um determinado bairro"""
-    motorista = connection.session.query(DriverQueue)\
-        .filter_by(bairro=bairro)\
-        .order_by(DriverQueue.data_entrada.asc())\
-        .first()
+    @classmethod
+    @db_connector
+    def motorista_da_vez(cls, connection, bairro):
+        """Seleciona e remove o motorista que está há mais tempo na fila em um determinado bairro"""
+        motorista = connection.session.query(DriverQueue)\
+            .filter_by(bairro=bairro)\
+            .order_by(DriverQueue.data_entrada.asc())\
+            .first()
+        
+        if motorista is not None:  # Verifica se há algum motorista na fila
+            connection.session.delete(motorista)
+            connection.session.commit()
+            return motorista
+        
+        return None  # Caso não haja motoristas no bairro especificado
     
-    if motorista is not None:  # Verifica se há algum motorista na fila
-        connection.session.delete(motorista)
-        connection.session.commit()
-        return motorista
-    
-    return None  # Caso não haja motoristas no bairro especificado
+
+    @classmethod
+    @db_connector
+    def calcular_motorista_mais_proximo(cls, connection, input_lat, input_lon):
+        # Conversão de string para float para cálculo
+        input_lat = float(input_lat) 
+        input_lon = float(input_lon)
+
+        R = 6371  # Raio da Terra em km
+
+        motorista_proximo = (
+            connection.session.query(DriverQueue,
+                # Cálculo da distância usando a fórmula de Haversine
+                (R * func.acos(
+                    func.cos(func.radians(input_lat)) * func.cos(func.radians(func.cast(DriverQueue.lat, Float))) *
+                    func.cos(func.radians(func.cast(DriverQueue.lon, Float)) - func.radians(input_lon)) +
+                    func.sin(func.radians(input_lat)) * func.sin(func.radians(func.cast(DriverQueue.lat, Float)))
+                )).label('distancia')
+            )
+            .order_by('distancia')  # Ordena pela distância mais próxima
+            .first()  # Retorna o motorista mais próximo
+        )
+
+        return motorista_proximo
