@@ -1,11 +1,9 @@
 """Gerencia o envio de corridas"""
 
-
-
 import requests
 
 from ..querys import BotQuerys
-from ..bairros_proximos import bairros_proximos
+# from ..bairros_proximos import bairros_proximos
 
 class Corrida:
     """Processo de envio de corridas"""

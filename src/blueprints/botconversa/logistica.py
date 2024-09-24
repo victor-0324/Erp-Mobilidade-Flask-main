@@ -6,12 +6,11 @@ from .bairros import bairros
 import time
 
 from .bairros import bairros
-
-
 api_key = 'pk.f17234d51a1015ab3c5ecb138de627c9' 
 
-# Corrigir possíveis erros ortográficos dos bairros
+
 def corrigir_bairro(bairro_digitado):
+
     # Criar uma lista de possíveis nomes (principais e alternativos)
     todos_nomes = []
     nome_para_bairro = {}
@@ -25,23 +24,12 @@ def corrigir_bairro(bairro_digitado):
         for nome_alternativo in dados['nomes_alternativos']:
             todos_nomes.append(nome_alternativo)
             nome_para_bairro[nome_alternativo] = bairro
-    
-    # Usar o `rapidfuzz` para encontrar o nome mais próximo
     nome_corrigido, _ = process.extractOne(bairro_digitado, todos_nomes)
 
-    # Retornar o nome principal associado ao nome corrigido
+
     return nome_para_bairro[nome_corrigido]
 
-# Adicionar motorista na fila com a data e hora atual
-def adicionar_motorista_na_fila(nome, bairro_atual, telefone):
-    data_entrada = datetime.now()
-    MotoristsQuerys.new(nome, {
-        "bairro_atual": bairro_atual,
-        "telefone": telefone,
-        "data_entrada": data_entrada
-    })
 
-# Função para selecionar o motorista mais próximo ou a mais tempo na fila
 def selecionar_motorista(fila, bairro_cliente):
     bairro_cliente_corrigido = corrigir_bairro(bairro_cliente)
     
@@ -56,7 +44,8 @@ def selecionar_motorista(fila, bairro_cliente):
     return "Sem motoristas disponíveis"
 
 
-def logistica(api_key, fila_, lat, lon):
+def logistica(api_key, fila_, lat, lon, bairro_embarque, embarque):
+    ''' Logistica para busca o motorista mas proximo do cliente '''
 
     motorista_mais_proximo = None
     menor_distancia = float('inf')  # Iniciando com uma distância infinita
@@ -111,12 +100,84 @@ def logistica(api_key, fila_, lat, lon):
             'mensagem': "Nenhum motorista encontrado."
         }
 
-    return json.dumps(resultado, indent=4)
+    
+    api_url = 'https://backend.botconversa.com.br/api/v1/webhooks-automation/catch/87780/FTD5inieIqwk/'
+    key = '26084536-20e3-4c12-98fc-dd6b30ba2417' 
 
+    telefone = resultado['motorista_mais_proximo']['telefone']
+     
+    # Parâmetros da requisição
+    params = {
+        'bairro_embarque': bairro_embarque,
+        'embarque': embarque,
+        'telefone':telefone 
+    }
+
+    # Headers com a chave de autenticação
+    headers = {
+        'Authorization': f'API-KEY {key}', 
+        'Content-Type': 'application/json'  # Definindo o tipo de conteúdo
+    }
+
+    # Fazendo a requisição POST
+    response = requests.post(api_url, json=params, headers=headers, timeout=30)
+
+    # Verificando e imprimindo o resultado
+    if response.status_code == 200:
+        print("Requisição bem-sucedida!")
+     
+    else:
+        print(f"Erro na requisição: {response.status_code}")
+        print(response.text)
+
+    return json.dumps(resultado, indent=4)
     
 
+def busca_lat_lon(api_key, embarque, bairro_embarque, cidade):
+    ''' Função para buscar a latitude e longitude do cliente '''
 
-    # Carregar o JSON de um arquivo
+    # Construir a URL da API para buscar a latitude e longitude
+    url = f'https://us1.locationiq.com/v1/search?key={api_key}&q={embarque},{bairro_embarque},{cidade}&format=json'
+
+    try:
+        # Fazer a requisição GET para a API
+        response = requests.get(url)
+
+        # Verificar se a requisição foi bem-sucedida
+        if response.status_code == 200:
+            # Obter o JSON da resposta
+            data = response.json()
+
+            
+            # Extrair lat e lon da primeira resposta
+            if isinstance(data, list) and len(data) > 0:
+                display_name = data[0]['display_name']
+                lat = data[0]['lat']
+                lon = data[0]['lon']
+                print(f'Endereço {display_name}')
+                print(f"Localização do cliente: Latitude: {lat}, Longitude: {lon}")
+
+                # Retornar as coordenadas como um dicionário
+                return {
+                    'latitude': lat,
+                    'longitude': lon
+                }
+            else:
+                print("Nenhuma coordenada encontrada na resposta.")
+                return None
+
+        else:
+            print(f"Erro na requisição: {response.status_code} - {response.text}")
+            return None
+
+    except Exception as e:
+        print(f"Ocorreu um erro: {e}")
+        return None
+
+
+
+
+# Carregar o JSON de um arquivo
     # with open('src/blueprints/botconversa/bairros_proximos.json', 'r') as file:
     #     bairros_proximos = json.load(file)
 
@@ -162,46 +223,3 @@ def logistica(api_key, fila_, lat, lon):
     #     return f"Motorista mais distante: {motoristas_longe[0][1]} no bairro {motoristas_longe[0][0]}"
     # else:
     #     return "Nenhum motorista disponível." 
-    
-
-def busca_lat_lon(api_key, embarque, bairro_embarque, cidade):
-        ''' Função para buscar a latitude e longitude do cliente '''
-
-        # Construir a URL da API para buscar a latitude e longitude
-        url = f'https://us1.locationiq.com/v1/search?key={api_key}&q={embarque},{bairro_embarque},{cidade}&format=json'
-
-        try:
-            # Fazer a requisição GET para a API
-            response = requests.get(url)
-
-            # Verificar se a requisição foi bem-sucedida
-            if response.status_code == 200:
-                # Obter o JSON da resposta
-                data = response.json()
-
-               
-                # Extrair lat e lon da primeira resposta
-                if isinstance(data, list) and len(data) > 0:
-                    display_name = data[0]['display_name']
-                    lat = data[0]['lat']
-                    lon = data[0]['lon']
-                    print(f'Endereço {display_name}')
-                    print(f"Localização do cliente: Latitude: {lat}, Longitude: {lon}")
-
-                    # Retornar as coordenadas como um dicionário
-                    return {
-                        'latitude': lat,
-                        'longitude': lon
-                    }
-                else:
-                    print("Nenhuma coordenada encontrada na resposta.")
-                    return None
-
-            else:
-                print(f"Erro na requisição: {response.status_code} - {response.text}")
-                return None
-
-        except Exception as e:
-            print(f"Ocorreu um erro: {e}")
-            return None
-
