@@ -3,9 +3,10 @@ from fuzzywuzzy import process
 import requests
 import json
 from .bairros import bairros
+
 import time
 
-from .bairros import bairros
+
 api_key = 'pk.f17234d51a1015ab3c5ecb138de627c9' 
 
 
@@ -44,11 +45,11 @@ def selecionar_motorista(fila, bairro_cliente):
     return "Sem motoristas disponíveis"
 
 
-def logistica(api_key, fila_, lat, lon, bairro_embarque, embarque):
+def busca_motorista(api_key, fila_, lat, lon):
     ''' Logistica para busca o motorista mas proximo do cliente '''
 
     motorista_mais_proximo = None
-    menor_distancia = float('inf')  # Iniciando com uma distância infinita
+    menor_distancia = float('inf')  
 
     # Percorrer cada motorista na lista
     for motorista in fila_:
@@ -67,14 +68,13 @@ def logistica(api_key, fila_, lat, lon, bairro_embarque, embarque):
                 dados = response.json()
                 
                 # Extrair a distância da resposta (primeira rota)
-                distancia = dados['routes'][0]['distance']  # Distância em metros
-
-                print(f"Distância entre motorista {motorista[3]} e cliente: {distancia} metros")
-
+                distancia = dados['routes'][0]['distance'] 
+              
+                # print(f"Distância entre motorista {motorista[3]} e cliente: {distancia} metros")
                 # Se a distância atual for menor que a menor distância registrada
                 if distancia < menor_distancia:
                     menor_distancia = distancia
-                    motorista_mais_proximo = motorista  # Atualiza o motorista mais próximo
+                    motorista_mais_proximo = motorista  
             else:
                 print(f"Erro na requisição: {response.status_code}")
         except Exception as e:
@@ -99,27 +99,44 @@ def logistica(api_key, fila_, lat, lon, bairro_embarque, embarque):
         resultado = {
             'mensagem': "Nenhum motorista encontrado."
         }
+        
 
+    return json.dumps(resultado, indent=4)
     
+
+def enviar_corrida_bot(motorista, valores, tipo_destino, tipo_bairro, bairro_embarque, embarque):
+    ''' Embarque
+        Telefone do motorista
+        Duração total 
+        distancia
+        Bairro embarque '''
+    
+    distancia = valores['distancia']
+    duracao = valores['duracao'] 
+
+
     api_url = 'https://backend.botconversa.com.br/api/v1/webhooks-automation/catch/87780/FTD5inieIqwk/'
     key = '26084536-20e3-4c12-98fc-dd6b30ba2417' 
+    if isinstance(motorista, str):
+        # Se for, converte a string JSON para um dicionário
+        motorista = json.loads(motorista)
 
-    telefone = resultado['motorista_mais_proximo']['telefone']
-     
+    telefone = motorista["motorista_mais_proximo"]["telefone"]
+    print(telefone)
     # Parâmetros da requisição
     params = {
-        'bairro_embarque': bairro_embarque,
-        'embarque': embarque,
-        'telefone':telefone 
+        'bairro_embarque':bairro_embarque,
+        'embarque':embarque,
+        'telefone':telefone,
+        'distancia':distancia,
+        'duracao':duracao,
+        'tipo_destino':tipo_destino,
+        'tipo_embarque':tipo_bairro
     }
-
-    # Headers com a chave de autenticação
     headers = {
         'Authorization': f'API-KEY {key}', 
         'Content-Type': 'application/json'  # Definindo o tipo de conteúdo
     }
-
-    # Fazendo a requisição POST
     response = requests.post(api_url, json=params, headers=headers, timeout=30)
 
     # Verificando e imprimindo o resultado
@@ -130,10 +147,42 @@ def logistica(api_key, fila_, lat, lon, bairro_embarque, embarque):
         print(f"Erro na requisição: {response.status_code}")
         print(response.text)
 
-    return json.dumps(resultado, indent=4)
-    
+    return response.text
 
-def busca_lat_lon(api_key, embarque, bairro_embarque, cidade):
+
+def distancia_destino(api_key, lon_destino, lat_destino, lon, lat):
+    # Montar a URL da requisição
+    # print(f'Cliente {lon}  {lat} ')
+    # print(f'Destino {lon_destino} {lat_destino}')
+    
+    url = f'https://us1.locationiq.com/v1/directions/driving/{lon_destino},{lat_destino};{lat},{lon}?key={api_key}&steps=true&alternatives=true&geometries=polyline&overview=full'
+
+    # Fazer a requisição GET para a API de rotas
+    response = requests.get(url)
+
+    # Verificar se a requisição foi bem-sucedida
+    if response.status_code == 200:
+        dados = response.json()
+       
+        duracao = dados['routes'][0]['duration']  
+        distancia = dados['routes'][0]['distance']
+        # print(duracao)
+        # print(distancia)
+
+        # Retornar os dados necessários
+        return {
+            'distancia': distancia,  
+            'duracao': duracao,   
+        }
+    else:
+        # Caso ocorra um erro na requisição, retornar uma mensagem de erro
+        return {
+            'erro': 'Não foi possível obter os dados da API.',
+            'status_code': response.status_code
+        }
+
+
+def lat_lon_cliente(api_key, embarque, bairro_embarque, cidade):
     ''' Função para buscar a latitude e longitude do cliente '''
 
     # Construir a URL da API para buscar a latitude e longitude
@@ -176,50 +225,51 @@ def busca_lat_lon(api_key, embarque, bairro_embarque, cidade):
 
 
 
+def atualizar_tarifas(dados):
+    tarifas["bandeira_1"]["valor_minimo"] = float(dados.get('valor_minimo_b1', tarifas["bandeira_1"]["valor_minimo"]))
+    tarifas["bandeira_1"]["valor_por_km"] = float(dados.get('valor_por_km_b1', tarifas["bandeira_1"]["valor_por_km"]))
+    tarifas["bandeira_1"]["valor_por_minuto"] = float(dados.get('valor_por_minuto_b1', tarifas["bandeira_1"]["valor_por_minuto"]))
 
-# Carregar o JSON de um arquivo
-    # with open('src/blueprints/botconversa/bairros_proximos.json', 'r') as file:
-    #     bairros_proximos = json.load(file)
+    tarifas["bandeira_2"]["valor_minimo"] = float(dados.get('valor_minimo_b2', tarifas["bandeira_2"]["valor_minimo"]))
+    tarifas["bandeira_2"]["valor_por_km"] = float(dados.get('valor_por_km_b2', tarifas["bandeira_2"]["valor_por_km"]))
+    tarifas["bandeira_2"]["valor_por_minuto"] = float(dados.get('valor_por_minuto_b2', tarifas["bandeira_2"]["valor_por_minuto"]))
 
-  
-    # bairro_embarque_cliente = cliente
+    return json.dumps(tarifas)
+
+
+def calcular_valor_corrida(valores):
+    distancia = valores['distancia']
+    duracao = valores['duracao'] 
+    horario = valores['horario_solicitacao']
+   
+    # Converter distâncias de metros para quilômetros
+    distancia_total_km = distancia / 1000
+    duracao_total_min = duracao / 60 
+
+    # Definir bandeira e valores mínimos com base no horário
+    hora_solicitacao = type(int[horario])
+    print(hora_solicitacao)
+    # Verificar se a corrida será durante o dia ou madrugada
+    if hora_solicitacao >= 0 and hora_solicitacao < 6:
+        # Bandeira 2 (madrugada)
+        bandeira = 2
+        valor_minimo = tarifas["bandeira_2"]["valor_minimo"]
+        valor_por_km = tarifas["bandeira_2"]["valor_por_km"]
+        valor_por_minuto = tarifas["bandeira_2"]["valor_por_minuto"]
+    else:
+        # Bandeira 1 (dia)
+        bandeira = 1
+        valor_minimo = tarifas["bandeira_1"]["valor_minimo"]
+        valor_por_km = tarifas["bandeira_1"]["valor_por_km"]
+        valor_por_minuto = tarifas["bandeira_1"]["valor_por_minuto"]
     
-    # bairro_corrigido = corrigir_bairro(bairro_embarque_cliente)
-    # print(bairro_embarque_cliente)
-    # print(bairro_corrigido)
-
+    # Cálculo do valor da corrida
+    valor_corrida = (valor_por_km * distancia_total_km) + (valor_por_minuto * duracao_total_min)
+    valor_total = max(valor_corrida, valor_minimo)
     
-    # # # Buscar proximidades do bairro de embarque do cliente
-    # proximidades = bairros_proximos.get('bairros_proximos', {}).get(bairro_corrigido, None)
-    # if not proximidades:
-    #     return "Bairro de embarque do cliente não encontrado nas proximidades."
-
-    # perto = proximidades["perto"]
-    # medio = proximidades["medio"]
-    # longe = proximidades["longe"]
-
-    # motoristas_perto = []
-    # motoristas_medio = []
-    # motoristas_longe = []
-
-    # # Verificar cada motorista na fila
-    # for motorista in fila:
-    #     bairro_motorista = motorista[0]
-    #     telefone_motorista = motorista[1]
-
-    #     if bairro_motorista in perto:
-    #         motoristas_perto.append((bairro_motorista, telefone_motorista))
-    #     elif bairro_motorista in medio:
-    #         motoristas_medio.append((bairro_motorista, telefone_motorista))
-    #     elif bairro_motorista in longe:
-    #         motoristas_longe.append((bairro_motorista, telefone_motorista))
-
-    # # Retornar o motorista mais próximo disponível
-    # if motoristas_perto:
-    #     return f"Motorista mais próximo: {motoristas_perto[0][1]} no bairro {motoristas_perto[0][0]}"
-    # elif motoristas_medio:
-    #     return f"Motorista a distância média: {motoristas_medio[0][1]} no bairro {motoristas_medio[0][0]}"
-    # elif motoristas_longe:
-    #     return f"Motorista mais distante: {motoristas_longe[0][1]} no bairro {motoristas_longe[0][0]}"
-    # else:
-    #     return "Nenhum motorista disponível." 
+    return {
+        "distancia_total_km": distancia_total_km,
+        "tempo_total_minutos": duracao_total_min,
+        "bandeira": bandeira,
+        "valor_total": round(valor_total, 2)  # Arredondar para duas casas decimais
+    }

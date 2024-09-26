@@ -1,20 +1,16 @@
 # pylint: disable=no-value-for-parameter,unused-variable
 """Rotas de Financeiro"""
-import requests
 
 from flask import Blueprint, jsonify, request
-
 from .rest import BotConversaView
 from .querys import BotQuerys
-
-from .logistica import logistica, busca_lat_lon, corrigir_bairro
+from .logistica import busca_motorista, lat_lon_cliente, corrigir_bairro, atualizar_tarifas, distancia_destino, enviar_corrida_bot
 
 from .src import (
     dados_usuario_por_telefone,
     enviar_corrida
     
 )
-
 
 botconversa_app = Blueprint(
     "botconversa_app", __name__, url_prefix="/botconversa/")
@@ -29,6 +25,7 @@ def public_endpoint(function):
 @public_endpoint
 @botconversa_app.route('/', methods=['POST'])
 def add_driver():
+    
     data_json = request.get_json()
     telefone = data_json['telefone']
     bairro = corrigir_bairro(data_json['bairro'])
@@ -59,24 +56,49 @@ def corrida():
 
     api_key = 'pk.f17234d51a1015ab3c5ecb138de627c9' 
     data_json = request.get_json()
-
-    bairro_embarque = data_json['bairro_embarque']
+    bairro_embarque = corrigir_bairro(data_json['bairro_embarque'])
     embarque = data_json['embarque']
     cidade = 'São Lourenço MG 37470000'
-    bairro_destino =  data_json['bairro_destino']
-
+    bairro_destino = corrigir_bairro(data_json['bairro_destino'])
+   
+    # Fila dos Motoristas
     fila_ = [[driver.id, driver.lat, driver.lon, driver.name, driver.telefone, driver.bairro] for driver in BotQuerys().fila()]
 
+    busca =  lat_lon_cliente(api_key, embarque, bairro_embarque, cidade)
+    if busca:
+        lat =  busca['latitude']
+        lon =  busca['longitude']
+    motorista = busca_motorista(api_key, fila_, lat, lon) 
 
-    busca =  busca_lat_lon(api_key, embarque, bairro_embarque, cidade)
-    lat =  busca['latitude']
-    lon =  busca['longitude']
-    
-    resultado = logistica(api_key, fila_, lat, lon, bairro_embarque, embarque)
-    print(resultado)
+    cordenadas = BotQuerys().lat_lon_destino(bairro_destino)
+    if cordenadas:
+        lat_destino = cordenadas['latitude']
+        lon_destino = cordenadas['longitude']
+        tipo_destino = cordenadas['tipo_destino']
 
-    return jsonify({"motorista_proximo": resultado }), 200
+    valores = distancia_destino(api_key, lon_destino, lat_destino, lat, lon)
+    print(valores)
     
+    tipo_bairro =  BotQuerys().tipo_bairro_embarque(bairro_embarque)
+    enviar_corrida_bot(motorista, valores, tipo_destino, tipo_bairro, bairro_embarque, embarque)
+   
+    return jsonify({"motorista_proximo": motorista }), 200
+    
+
+@public_endpoint
+@botconversa_app.route('/tarifas', methods=['POST'])
+def tarifa():
+    ''' Calcula e modifica os valores das tarifas '''
+    
+    data_json = request.get_json()
+    print(f'Dados recebido: {data_json}')
+    dados = atualizar_tarifas(data_json)
+
+    print(f'Valor alterado: {dados}')
+    
+    return jsonify({"motorista_proximo": dados }), 200
+
+
 
 @public_endpoint
 @botconversa_app.route('/fila/sair', methods=['POST'])
@@ -91,23 +113,3 @@ botconversa_view = public_endpoint(BotConversaView.as_view('botconversa_view'))
 botconversa_app.add_url_rule('/rest', view_func=botconversa_view)
 
 
-
-
-
-  # motorista_proximo = BotQuerys().calcular_motorista_mais_proximo(lat, lon)
-    
-    # # Verifique se encontrou algum motorista
-    # if motorista_proximo:
-    #     motorista_dict = {
-    #         'id': motorista_proximo.DriverQueue.id,
-    #         'name': motorista_proximo.DriverQueue.name,
-    #         'telefone': motorista_proximo.DriverQueue.telefone,
-    #         'lat': motorista_proximo.DriverQueue.lat,
-    #         'lon': motorista_proximo.DriverQueue.lon,
-    #         'bairro': motorista_proximo.DriverQueue.bairro,
-    #         'distancia': motorista_proximo.distancia  # Distância calculada
-    #     }
-    #     print(f'O Motorista mais próximo é {motorista_dict["name"]} no bairro {motorista_dict["bairro"]}')
-        
-    #     resultado = obter_distancia(api_key, lat, lon)
-    #     print(resultado)
