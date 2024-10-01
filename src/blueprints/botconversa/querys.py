@@ -3,10 +3,9 @@
 
 from sqlalchemy import or_
 from src.database.db_connection import db_connector
-from .models import DriverQueue, Bairros
+from .models import Motoristas, Bairros
 from .bairros import bairros
-import requests
-
+from datetime import datetime
 
 class BotQuerys:
     """A Consult if name alredy exits"""
@@ -14,8 +13,24 @@ class BotQuerys:
     @db_connector
     def fila(cls, connection):
         """Return all motorists in database"""
-        return connection.session.query(DriverQueue).all()
+        return connection.session.query(Motoristas).all()
 
+    @classmethod
+    @db_connector
+    def buscar_motorista_por_tel(cls, connection, tel_motorista):
+        """Return all motorists in database"""
+        motorista = connection.session.query(Motoristas).filter_by(telefone=tel_motorista).first()
+        return motorista
+    
+
+    @classmethod
+    @db_connector
+    def atualizar_status_motorista(cls, connection, motorista_troca):
+        ''' Atualiza o status do motorista a pos o pedido de troca do cliente ''' 
+
+        motorista_troca.status = 'livre'
+        motorista_troca.duracao_corrida='', 
+        connection.session.commit()
 
 
     @classmethod
@@ -35,83 +50,72 @@ class BotQuerys:
         connection.session.commit()
         connection.session.close()
 
+    @classmethod
+    @db_connector
+    def cadastrar_motorista(cls, connection, name, sexo, telefone, tipo_carro):
+        ''' Cadastrar um motorista '''
+
+         # Criar uma nova instância da classe Motoristas
+        novo_motorista = Motoristas(
+            name=name,
+            sexo=sexo,
+            telefone=telefone,
+            tipo_carro=tipo_carro,
+            total_nota='0',  
+            avalicoes='0',  
+            lat='0',
+            lon='0', 
+            bairro='',  
+            status='off',
+            hora_livre=None,
+            inicio_corrida=None, 
+            duracao_corrida='', 
+            tempo_restante_corrida='', 
+            cliente_bloqueado=None,
+            cliente_favorito=None
+        )
+
+        # Adicionar o novo motorista à sessão do banco de dados
+        connection.session.add(novo_motorista)
+        
+        # Confirmar a transação (salvar no banco de dados)
+        connection.session.commit()
+
+        return novo_motorista
+
 
     @classmethod
     @db_connector
-    def novo(cls, connection, name, telefone, bairro_nome):
+    def livre(cls, connection, telefone, bairro):
         """Função para adicionar novo motorista ou atualizar localização"""
-
-        check_name = connection.session.query(DriverQueue).filter_by(name=name).first()
-        bairro = connection.session.query(Bairros).filter_by(nome_bairro=bairro_nome).first()
-
-        if bairro:
+      
+        motorista = connection.session.query(Motoristas).filter_by(telefone=telefone).first()
+        bairro = connection.session.query(Bairros).filter_by(nome_bairro=bairro).first()
+    
+        if bairro and motorista.status == 'off' or motorista.status == 'em_corrida':
             lat = bairro.lat
-            lon = bairro.lon
+            lon = bairro.lon 
+            motorista.status = 'livre'
+            agora = datetime.now()
+            motorista.bairro = bairro.nome_bairro
+            motorista.hora_livre = agora
+            motorista.duracao_corrida = ''
+            motorista.inicio_corrida = None
+            motorista.lat = lat
+            motorista.lon = lon
+            connection.session.commit()  
         else:
-            print(f"Bairro {bairro_nome} não encontrado no banco de dados.")
-            return None
-
-        # Se o nome já existe, atualizar lat e lon
-        if check_name:
-            print(f"Motorista {name} já existe. Atualizando localização para o bairro {bairro_nome}.")
-            check_name.lat = lat
-            check_name.lon = lon
-            check_name.bairro = bairro_nome
-            connection.session.commit() 
-            return check_name
-        
-
-        # Se o nome não existir, criar um novo registro
-        new_driver = DriverQueue(name=name, telefone=telefone, bairro=bairro_nome, lat=lat, lon=lon)
-    
-        connection.session.add(new_driver)
-        connection.session.commit()  
-        print(f"Novo motorista {name} adicionado com localização: {lat}, {lon}")
-        return new_driver
+            lat = bairro.lat
+            lon = bairro.lon 
+            motorista.status = 'livre'
+            motorista.duracao_corrida = ''
+            motorista.inicio_corrida = None
+            motorista.bairro = bairro.nome_bairro
+            motorista.lat = lat
+            motorista.lon = lon
+            connection.session.commit()  
+            return 
    
-
-    @classmethod
-    @db_connector
-    def remove_first_driver(cls, connection, telefone):
-        """Remove the first driver in the queue and return its data"""
-        first_driver = connection.session.query(DriverQueue).filter_by(telefone=telefone).first()
-        if first_driver:
-            first_driver_data = {
-                'name': first_driver.name,
-                'telefone': first_driver.telefone,
-                'bairro': first_driver.bairro
-            }
-            connection.session.delete(first_driver)
-            connection.session.commit()
-            return first_driver_data
-        else:
-            return None
-
-    @classmethod
-    @db_connector
-    def sair_da_fila(cls, connection, telefone):
-        """someting"""
-        check_name = connection.session.query(DriverQueue).filter_by(telefone=telefone).first()
-        if check_name != None:  # pylint: disable=singleton-comparison
-            connection.session.delete(check_name)
-            connection.session.commit()
-
-    @classmethod
-    @db_connector
-    def motorista_da_vez(cls, connection, bairro):
-        """Seleciona e remove o motorista que está há mais tempo na fila em um determinado bairro"""
-        motorista = connection.session.query(DriverQueue)\
-            .filter_by(bairro=bairro)\
-            .order_by(DriverQueue.data_entrada.asc())\
-            .first()
-        
-        if motorista is not None:  # Verifica se há algum motorista na fila
-            connection.session.delete(motorista)
-            connection.session.commit()
-            return motorista
-        
-        return None  # Caso não haja motoristas no bairro especificado
-    
     @classmethod
     @db_connector
     def tipo_bairro_embarque(cls, connection, bairro_embarque):
@@ -154,3 +158,82 @@ class BotQuerys:
         else:
             print(f"Bairro {bairro_destino} não encontrado no banco de dados.")
             return None
+        
+
+    @classmethod
+    @db_connector
+    def iniciar_corrida(cls, connection, telefone, duracao_total):
+        """Iniciar uma corrida para o motorista"""
+        
+        motorista = connection.session.query(Motoristas).filter_by(telefone=telefone).first()
+
+        if motorista and motorista.status == 'livre':
+            agora = datetime.now()
+            motorista.status = 'em_corrida'
+            motorista.inicio_corrida = agora
+            motorista.duracao_corrida = duracao_total
+            connection.session.commit()
+            print(f"motorista {motorista.name} iniciou uma corrida de duração {duracao_total}.")
+        else:
+            print(f"motorista {motorista.name} não está disponível para iniciar uma corrida.")
+
+
+    @classmethod
+    @db_connector
+    def calcular_tempo_restante_corrida(cls, connection, name):
+        """Calcular o tempo restante da corrida"""
+        DriverQueue = connection.session.query(Motoristas).filter_by(name=name, status='em_corrida').first()
+
+        if DriverQueue and DriverQueue.inicio_corrida:
+            agora = datetime.now()
+            tempo_decorrido = agora - DriverQueue.inicio_corrida
+            tempo_restante = DriverQueue.duracao_esperada_corrida - tempo_decorrido
+
+            print(f"Tempo restante da corrida para {name}: {tempo_restante}")
+            return tempo_restante
+        else:
+            print(f"DriverQueue {name} não está em uma corrida.")
+            return None
+
+    @classmethod
+    @db_connector
+    def finalizar_corrida(cls, connection, name):
+        """Finalizar a corrida e marcar o DriverQueue como livre"""
+        DriverQueue = connection.session.query(Motoristas).filter_by(name=name, status='em_corrida').first()
+
+        if DriverQueue:
+            DriverQueue.status = 'livre'
+            DriverQueue.inicio_corrida = None
+            DriverQueue.duracao_esperada_corrida = None
+            connection.session.commit()
+            print(f"DriverQueue {name} finalizou a corrida e está agora livre.")
+        else:
+            print(f"DriverQueue {name} não está em uma corrida ativa para finalizar.")
+
+    @classmethod
+    @db_connector
+    def entrar_off(cls, connection, name):
+        """Colocar o DriverQueue em status 'off'"""
+        DriverQueue = connection.session.query(Motoristas).filter_by(name=name).first()
+
+        if DriverQueue:
+            DriverQueue.status = 'off'
+            DriverQueue.inicio_corrida = None
+            DriverQueue.duracao_esperada_corrida = None
+            connection.session.commit()
+            print(f"DriverQueue {name} está agora offline.")
+        else:
+            print(f"DriverQueue {name} não encontrado.")
+
+    @classmethod
+    @db_connector
+    def voltar_trabalho(cls, connection, name):
+        """Colocar o DriverQueue de volta ao status 'livre' após estar 'off'"""
+        DriverQueue = connection.session.query(Motoristas).filter_by(name=name, status='off').first()
+
+        if DriverQueue:
+            DriverQueue.status = 'livre'
+            connection.session.commit()
+            print(f"DriverQueue {name} voltou ao trabalho e está agora livre.")
+        else:
+            print(f"DriverQueue {name} não estava offline ou não foi encontrado.")

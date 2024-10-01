@@ -8,8 +8,8 @@ from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy import text
 
 from src.database.db_connection import db_connector
-from src.database.models import Motorists
-from src.database.models.runs import runs_factory
+# from src.database.models import Motorists
+# from src.database.models.runs import runs_factory
 
 
 class MotoristsQuerys:

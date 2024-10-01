@@ -1,2 +1,2 @@
-from .base import Base, RunsBase
+from .base import Base
 from .db_connection import DBConnectionHendler

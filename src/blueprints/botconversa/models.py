@@ -3,24 +3,33 @@
 
 
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, JSON
 
 from src.database import Base
 
 
-class DriverQueue(Base):
-    """Fila de Motoristas"""
+class Motoristas(Base):
+    """ Fila de Motoristas """
 
-    __tablename__ = "driver_queue"
+    __tablename__ = "motoristas"
     id = Column(Integer, primary_key=True)
     name = Column(String(120))
-    telefone = Column(String(15))
+    telefone = Column(String(20))
+    sexo = Column(String(50))
+    tipo_carro = Column(String(20))
+    total_nota = Column(String(20))  
+    avalicoes = Column(String(20))
     lat = Column(String(150))
     lon = Column(String(150))
     bairro = Column(String(255))
-    date_time = Column(DateTime(), default=datetime.now)
-
-
+    status = Column(String(50))                     # Status do motorista: livre, em_corrida.
+    hora_livre = Column(DateTime)                   # Momento em que o motorista ficou livre
+    inicio_corrida = Column(DateTime)               # Hora em que a corrida começou
+    duracao_corrida = Column(String(100))           # Duração da corrida (recebida da API)
+    tempo_restante_corrida = Column(String(100))    # Tempo restante da corrida
+    cliente_bloqueado = Column(JSON)  
+    cliente_favorito = Column(JSON) 
+    
 class Endereco(Base):
     """ Endereços clientes """
 

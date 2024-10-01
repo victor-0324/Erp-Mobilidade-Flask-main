@@ -45,66 +45,151 @@ def selecionar_motorista(fila, bairro_cliente):
     return "Sem motoristas disponíveis"
 
 
-def busca_motorista(api_key, fila_, lat, lon):
-    ''' Logistica para busca o motorista mas proximo do cliente '''
+def busca_motorista(api_key, sexo, fila_, lat, lon):
+    '''Logística para buscar o motorista mais próximo do cliente'''
 
     motorista_mais_proximo = None
     menor_distancia = float('inf')  
 
     # Percorrer cada motorista na lista
     for motorista in fila_:
-        motorista_lat = motorista[1]  # Latitude do motorista
-        motorista_lon = motorista[2]  # Longitude do motorista
+        motorista_sexo = motorista[1]
+        motorista_status = motorista[8]  # Supondo que o status esteja na posição 8
 
-        # Formatar a URL da requisição
-        url = f'https://us1.locationiq.com/v1/directions/driving/{motorista_lon},{motorista_lat};{lon},{lat}?key={api_key}&steps=true&alternatives=true&geometries=polyline&overview=full'
+        # Filtrar motoristas que estejam "livres" e com o sexo correspondente
+        if motorista_status == "livre" and (sexo == 'neutro' or motorista_sexo == sexo):
+            motorista_lat = motorista[3] 
+            motorista_lon = motorista[4]  
 
-        try:
-            # Fazer a requisição GET para a API de rotas
-            response = requests.get(url)
+            # URL da API de cálculo de rotas
+            url = f'https://us1.locationiq.com/v1/directions/driving/{motorista_lon},{motorista_lat};{lon},{lat}?key={api_key}&steps=true&alternatives=true&geometries=polyline&overview=full'
 
-            # Verificar se a requisição foi bem-sucedida
-            if response.status_code == 200:
-                dados = response.json()
-                
-                # Extrair a distância da resposta (primeira rota)
-                distancia = dados['routes'][0]['distance'] 
-              
-                # print(f"Distância entre motorista {motorista[3]} e cliente: {distancia} metros")
-                # Se a distância atual for menor que a menor distância registrada
-                if distancia < menor_distancia:
-                    menor_distancia = distancia
-                    motorista_mais_proximo = motorista  
-            else:
-                print(f"Erro na requisição: {response.status_code}")
-        except Exception as e:
-            print(f"Ocorreu um erro: {e}")
-        # Esperar 0,5 segundos antes da próxima requisição
-        time.sleep(1)
+            try:
+                response = requests.get(url)
 
-    # Retornar o motorista mais próximo e a distância em JSON
+                if response.status_code == 200:
+                    dados = response.json()
+
+                    # Extrair a distância da resposta (primeira rota)
+                    distancia = dados['routes'][0]['distance'] 
+                    tempo_para_embarque = dados['routes'][0]['duration']
+
+                    # Se a distância atual for menor que a menor distância registrada
+                    if distancia < menor_distancia:
+                        menor_distancia = distancia
+                        motorista_mais_proximo = motorista  
+                else:
+                    print(f"Erro na requisição: {response.status_code}")
+            except Exception as e:
+                print(f"Ocorreu um erro: {e}")
+
+            # Aguardar 0,5 segundos antes de tentar a próxima requisição
+            time.sleep(0.5)
+
+    # Caso encontre um motorista
     if motorista_mais_proximo:
         resultado = {
-            'motorista_mais_proximo': {
-                'id': motorista_mais_proximo[0],        # ID do motorista
-                'latitude': motorista_mais_proximo[1],  # Latitude
-                'longitude': motorista_mais_proximo[2], # Longitude
-                'name': motorista_mais_proximo[3],      # Nome
-                'telefone': motorista_mais_proximo[4],  # Telefone
-                'bairro': motorista_mais_proximo[5],    # Bairro
-                'distancia_metros': menor_distancia     # Distância mais curta
-            }
+            'id': motorista_mais_proximo[0],            # ID do motorista
+            'sexo': motorista_mais_proximo[1],          # Sexo
+            'tipo_carro': motorista_mais_proximo[2],    # Tipo do carro
+            'latitude': motorista_mais_proximo[3],      # Latitude
+            'longitude': motorista_mais_proximo[4],     # Longitude
+            'name': motorista_mais_proximo[5],          # Nome
+            'telefone': motorista_mais_proximo[6],      # Telefone
+            'bairro': motorista_mais_proximo[7],        # Bairro
+            'distancia_metros': menor_distancia,        # Distância até o cliente
+            'tempo_para_embarque': tempo_para_embarque  # Tempo estimado de chegada
         }
+        return json.dumps(resultado, indent=4)
+    
     else:
-        resultado = {
-            'mensagem': "Nenhum motorista encontrado."
+        # Se não encontrar motorista, envia uma requisição ao bot
+        api_url = 'https://backend.botconversa.com.br/api/v1/webhooks-automation/catch/87780/FTD5inieIqwk/'
+        key = '26084536-20e3-4c12-98fc-dd6b30ba2417'
+        
+        params = {
+            'id': 'nenhum id',
+            'sexo': sexo,
+            'tipo_carro': 'desconhecido',                   # Pode substituir ou deixar como "desconhecido"
+            'lat': 'nenhum',
+            'lon': 'nenhum',
+            'name': 'nenhum',
+            'telefone': '00000000000',                      # Telefone desconhecido
+            'bairro': 'Nenhum',           
+            'distancia': 'Desconhecida',                    # Distância não calculada
+            'tipo_destino': 'Desconhecido',                 # Substitua se necessário
+            'tipo_embarque': 'Desconhecido',                # Substitua se necessário
+            'tempo_para_embarque': 'Nenhum'
         }
         
-
-    return json.dumps(resultado, indent=4)
+        headers = {
+            'Authorization': f'API-KEY {key}', 
+            'Content-Type': 'application/json'
+        }
+        
+        response = requests.post(api_url, json=params, headers=headers, timeout=30)
+        
+        if response.status_code == 200:
+            print("Requisição enviada ao bot com sucesso!")
+        else:
+            print(f"Erro ao enviar requisição ao bot: {response.status_code}") 
+            return  
+        
+        # Retorna a mensagem indicando a falta de motoristas
+        return json.dumps({
+            'mensagem': f"Nenhum motorista {'masculino' if sexo == 'masculino' else 'feminino' if sexo == 'feminino' else ''} disponível com status 'livre'."
+        }, indent=4)
     
 
-def enviar_corrida_bot(motorista, valores, tipo_destino, tipo_bairro, bairro_embarque, embarque):
+
+    
+def enviar_mot_cliente(motorista, valores, cliente_telefone, tipo_destino, tipo_bairro):
+    ''' enviar informaçoês do motorista para o cliente '''
+    
+    distancia = valores['distancia']
+    duracao = valores['duracao'] 
+
+
+    api_url = 'https://backend.botconversa.com.br/api/v1/webhooks-automation/catch/87780/EmDfsDrCgLMH/'
+    key = '26084536-20e3-4c12-98fc-dd6b30ba2417'
+
+    if isinstance(motorista, str):
+        # Se for, converte a string JSON para um dicionário
+        motorista = json.loads(motorista)
+
+    telefone = motorista["telefone"]
+    sexo = motorista['sexo']
+    tipo_carro = motorista['tipo_carro']
+
+    params = {
+        'sexo':sexo,
+        'tipo_carro':tipo_carro,
+        'mot_telefone':telefone,
+        'cliente_telefone': cliente_telefone,
+        'distancia':distancia,
+        'duracao':duracao,
+        'tipo_destino':tipo_destino,
+        'tipo_embarque':tipo_bairro
+    }
+    headers = {
+        'Authorization': f'API-KEY {key}', 
+        'Content-Type': 'application/json'  # Definindo o tipo de conteúdo
+    }
+    response = requests.post(api_url, json=params, headers=headers, timeout=30)
+
+    # Verificando e imprimindo o resultado
+    if response.status_code == 200:
+        print("Requisição bem-sucedida!")
+     
+    else:
+        print(f"Erro na requisição: {response.status_code}")
+        print(response.text)
+
+    return response.text
+
+
+
+def enviar_corrida_bot(motorista, valores, cliente_telefone, tipo_destino, tipo_bairro, bairro_embarque, bairro_destino, embarque):
     ''' Embarque
         Telefone do motorista
         Duração total 
@@ -121,13 +206,18 @@ def enviar_corrida_bot(motorista, valores, tipo_destino, tipo_bairro, bairro_emb
         # Se for, converte a string JSON para um dicionário
         motorista = json.loads(motorista)
 
-    telefone = motorista["motorista_mais_proximo"]["telefone"]
-    print(telefone)
-    # Parâmetros da requisição
+    telefone = motorista["telefone"]
+    sexo = motorista['sexo']
+    tipo_carro = motorista['tipo_carro']
+ 
     params = {
         'bairro_embarque':bairro_embarque,
+        'bairro_destino':bairro_destino,
+        'sexo':sexo,
+        'tipo_carro':tipo_carro,
         'embarque':embarque,
         'telefone':telefone,
+        'cliente_telefone': cliente_telefone,
         'distancia':distancia,
         'duracao':duracao,
         'tipo_destino':tipo_destino,
@@ -203,8 +293,8 @@ def lat_lon_cliente(api_key, embarque, bairro_embarque, cidade):
                 display_name = data[0]['display_name']
                 lat = data[0]['lat']
                 lon = data[0]['lon']
-                print(f'Endereço {display_name}')
-                print(f"Localização do cliente: Latitude: {lat}, Longitude: {lon}")
+                # print(f'Endereço {display_name}')
+                # print(f"Localização do cliente: Latitude: {lat}, Longitude: {lon}")
 
                 # Retornar as coordenadas como um dicionário
                 return {
@@ -222,54 +312,3 @@ def lat_lon_cliente(api_key, embarque, bairro_embarque, cidade):
     except Exception as e:
         print(f"Ocorreu um erro: {e}")
         return None
-
-
-
-def atualizar_tarifas(dados):
-    tarifas["bandeira_1"]["valor_minimo"] = float(dados.get('valor_minimo_b1', tarifas["bandeira_1"]["valor_minimo"]))
-    tarifas["bandeira_1"]["valor_por_km"] = float(dados.get('valor_por_km_b1', tarifas["bandeira_1"]["valor_por_km"]))
-    tarifas["bandeira_1"]["valor_por_minuto"] = float(dados.get('valor_por_minuto_b1', tarifas["bandeira_1"]["valor_por_minuto"]))
-
-    tarifas["bandeira_2"]["valor_minimo"] = float(dados.get('valor_minimo_b2', tarifas["bandeira_2"]["valor_minimo"]))
-    tarifas["bandeira_2"]["valor_por_km"] = float(dados.get('valor_por_km_b2', tarifas["bandeira_2"]["valor_por_km"]))
-    tarifas["bandeira_2"]["valor_por_minuto"] = float(dados.get('valor_por_minuto_b2', tarifas["bandeira_2"]["valor_por_minuto"]))
-
-    return json.dumps(tarifas)
-
-
-def calcular_valor_corrida(valores):
-    distancia = valores['distancia']
-    duracao = valores['duracao'] 
-    horario = valores['horario_solicitacao']
-   
-    # Converter distâncias de metros para quilômetros
-    distancia_total_km = distancia / 1000
-    duracao_total_min = duracao / 60 
-
-    # Definir bandeira e valores mínimos com base no horário
-    hora_solicitacao = type(int[horario])
-    print(hora_solicitacao)
-    # Verificar se a corrida será durante o dia ou madrugada
-    if hora_solicitacao >= 0 and hora_solicitacao < 6:
-        # Bandeira 2 (madrugada)
-        bandeira = 2
-        valor_minimo = tarifas["bandeira_2"]["valor_minimo"]
-        valor_por_km = tarifas["bandeira_2"]["valor_por_km"]
-        valor_por_minuto = tarifas["bandeira_2"]["valor_por_minuto"]
-    else:
-        # Bandeira 1 (dia)
-        bandeira = 1
-        valor_minimo = tarifas["bandeira_1"]["valor_minimo"]
-        valor_por_km = tarifas["bandeira_1"]["valor_por_km"]
-        valor_por_minuto = tarifas["bandeira_1"]["valor_por_minuto"]
-    
-    # Cálculo do valor da corrida
-    valor_corrida = (valor_por_km * distancia_total_km) + (valor_por_minuto * duracao_total_min)
-    valor_total = max(valor_corrida, valor_minimo)
-    
-    return {
-        "distancia_total_km": distancia_total_km,
-        "tempo_total_minutos": duracao_total_min,
-        "bandeira": bandeira,
-        "valor_total": round(valor_total, 2)  # Arredondar para duas casas decimais
-    }

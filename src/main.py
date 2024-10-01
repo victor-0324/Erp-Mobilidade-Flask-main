@@ -52,17 +52,17 @@ def init_app() -> Flask:
 
         app.register_blueprint(auth)
 
-        from .blueprints import dashboard_app
+        # from .blueprints import dashboard_app
 
-        app.register_blueprint(dashboard_app)
+        # app.register_blueprint(dashboard_app)
 
-        from .blueprints import drivers_app
+        # from .blueprints import drivers_app
 
-        app.register_blueprint(drivers_app)
+        # app.register_blueprint(drivers_app)
 
-        from .blueprints import revenues_app
+        # from .blueprints import revenues_app
 
-        app.register_blueprint(revenues_app)
+        # app.register_blueprint(revenues_app)
         
         from .blueprints import botconversa_app
         
