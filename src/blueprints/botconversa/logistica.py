@@ -40,6 +40,8 @@ def selecionar_motorista(fila, bairro_cliente):
 
     return "Sem motoristas disponíveis"
 
+
+
 def busca_motorista(api_key, bairro_embarque, tipo_carro, cliente_telefone, sexo, fila_, lat, lon):
     '''Busca o motorista mais próximo com base em verificações e tempo livre, priorizando motoristas no mesmo bairro.'''
 
@@ -53,8 +55,6 @@ def busca_motorista(api_key, bairro_embarque, tipo_carro, cliente_telefone, sexo
     for motorista in fila_:
         motorista_sexo = motorista[1] 
         mot_tipo_carro = motorista[2]
-     
-     
         motorista_status = motorista[8] 
         motorista_cliente_bloqueado = motorista[9]
         motorista_hora_livre = motorista[10] 
@@ -95,27 +95,23 @@ def busca_motorista(api_key, bairro_embarque, tipo_carro, cliente_telefone, sexo
                     distancia = dados['routes'][0]['distance']
                     tempo_para_embarque_atual = dados['routes'][0]['duration']
 
-                    # Calcular o tempo livre do motorista
+                    # Calcular o tempo livre do motorista (em segundos)
                     if isinstance(motorista_hora_livre, datetime):
-                        tempo_livre = (datetime.now() - motorista_hora_livre).total_seconds()
+                        agora = datetime.now()
+                        tempo_livre = (agora - motorista_hora_livre).total_seconds()  # Diferença em segundos
                     else:
                         print(f"Formato de hora inválido para o motorista {motorista[5]}")
                         continue
 
-                    # Atualizar o motorista com maior tempo livre
-                    if tempo_livre > maior_tempo_livre:
-                        maior_tempo_livre = tempo_livre
-                        motorista_com_maior_tempo_livre = motorista
-
-                    # Verificar se o motorista está mais próximo
+                    # Verificar se o motorista atual está mais próximo
                     if distancia < menor_distancia:
                         menor_distancia = distancia
                         motorista_mais_proximo = motorista
+                        maior_tempo_livre = tempo_livre
                         tempo_para_embarque = tempo_para_embarque_atual
 
-                    # Se a distância está dentro de 5% da menor distância, considerar também o motorista atual
-                    elif (abs(distancia - menor_distancia) / menor_distancia) <= 0.05:
-                        # Comparar o tempo livre
+                    # Se a distância for igual à menor distância, verificar quem está há mais tempo livre
+                    elif distancia == menor_distancia:
                         if tempo_livre > maior_tempo_livre:
                             motorista_mais_proximo = motorista
                             maior_tempo_livre = tempo_livre
@@ -126,7 +122,6 @@ def busca_motorista(api_key, bairro_embarque, tipo_carro, cliente_telefone, sexo
             except Exception as e:
                 print(f"Ocorreu um erro: {e}")
 
-            # Aguardar 0,5 segundos para não sobrecarregar a API
             time.sleep(0.3)
 
     # Verificar se encontrou um motorista
