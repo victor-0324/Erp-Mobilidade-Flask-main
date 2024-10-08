@@ -26,7 +26,7 @@ class DBConnectionHendler:
         session_maker = sessionmaker()
         self.session = session_maker(bind=engine)
         return self
-
+ 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.session.close()  # pylint: disable=no-member
 

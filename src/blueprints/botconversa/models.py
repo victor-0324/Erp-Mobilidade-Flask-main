@@ -26,9 +26,9 @@ class Motoristas(Base):
     hora_livre = Column(DateTime)                   # Momento em que o motorista ficou livre
     inicio_corrida = Column(DateTime)               # Hora em que a corrida começou
     duracao_corrida = Column(String(100))           # Duração da corrida (recebida da API)
-    tempo_restante_corrida = Column(String(100))    # Tempo restante da corrida
-    cliente_bloqueado = Column(JSON)  
-    cliente_favorito = Column(JSON) 
+    bairro_destino = Column(String(100))            # Tempo restante da corrida
+    cliente_bloqueado = Column(JSON, nullable=True)
+    cliente_favorito = Column(JSON, nullable=True)
     
 class Endereco(Base):
     """ Endereços clientes """
