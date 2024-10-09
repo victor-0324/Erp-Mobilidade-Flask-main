@@ -19,6 +19,7 @@ class Config:
     load_dotenv(user_dir)
 
     SECRET_KEY = os.environ.get("SECRET_KEY")
+    API_LOCATION_KEY = os.environ.get("API_LOCATION_KEY")
     UPLOAD_FOLDER = os.environ.get("MIDIA_PATH")
     MIDIA_PATH = join(os.getcwd(), "midia")
     ALLOWED_EXTENSIONS = {
