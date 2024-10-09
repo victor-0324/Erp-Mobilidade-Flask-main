@@ -1,3 +1,4 @@
+from src.settings import Config
 from datetime import datetime
 from fuzzywuzzy import process
 import requests
@@ -40,9 +41,7 @@ def selecionar_motorista(fila, bairro_cliente):
 
     return "Sem motoristas disponíveis"
 
-
-
-def busca_motorista(api_key, bairro_embarque, tipo_carro, cliente_telefone, sexo, fila_, lat, lon):
+def busca_motorista(bairro_embarque, tipo_carro, cliente_telefone, sexo, lat, lon):
     '''Busca o motorista mais próximo com base em verificações e tempo livre, priorizando motoristas no mesmo bairro.'''
 
     motorista_mais_proximo = None
@@ -51,13 +50,23 @@ def busca_motorista(api_key, bairro_embarque, tipo_carro, cliente_telefone, sexo
     maior_tempo_livre = float('-inf')
     tempo_para_embarque = None
 
+    # Fila dos Motoristas cadastrado no banco
+    fila_ = [
+        [
+            driver.id, driver.sexo, driver.tipo_carro, 
+            driver.lat, driver.lon, driver.name, 
+            driver.telefone, driver.bairro, driver.status, 
+            driver.cliente_bloqueado, driver.hora_livre
+        ] for driver in BotQuerys().fila()]
+   
+
     # Filtrar motoristas disponíveis e válidos
     for motorista in fila_:
-        motorista_sexo = motorista[1] 
+        motorista_sexo = motorista[1]
         mot_tipo_carro = motorista[2]
-        motorista_status = motorista[8] 
+        motorista_status = motorista[8]
         motorista_cliente_bloqueado = motorista[9]
-        motorista_hora_livre = motorista[10] 
+        motorista_hora_livre = motorista[10]
 
         # Verificar se o cliente está bloqueado para o motorista
         clientes_bloqueados = []
@@ -83,7 +92,7 @@ def busca_motorista(api_key, bairro_embarque, tipo_carro, cliente_telefone, sexo
             motorista_lon = motorista[4]
 
             # URL da API de cálculo de rotas
-            url = f'https://us1.locationiq.com/v1/directions/driving/{motorista_lon},{motorista_lat};{lon},{lat}?key={api_key}&steps=true&alternatives=true&geometries=polyline&overview=full'
+            url = f'https://us1.locationiq.com/v1/directions/driving/{motorista_lon},{motorista_lat};{lon},{lat}?key={Config.API_LOCATION_KEY}&steps=true&alternatives=true&geometries=polyline&overview=full'
 
             try:
                 response = requests.get(url)
@@ -259,11 +268,11 @@ def enviar_corrida_bot(motorista, tipo_carro, sexo, valores, cliente_telefone, t
 
     return response.text
 
-def distancia_destino(api_key, lon_destino, lat_destino, lat, lon,):
+def distancia_destino(lon_destino, lat_destino, lat, lon,):
     ''' Busca a distancia do destino do Cliente '''
 
     # Montar a URL da requisição
-    url = f'https://us1.locationiq.com/v1/directions/driving/{lon_destino},{lat_destino};{lon},{lat}?key={api_key}&steps=true&alternatives=true&geometries=polyline&overview=full'
+    url = f'https://us1.locationiq.com/v1/directions/driving/{lon_destino},{lat_destino};{lon},{lat}?key={Config.API_LOCATION_KEY}&steps=true&alternatives=true&geometries=polyline&overview=full'
 
     # Fazer a requisição GET para a API de rotas
     response = requests.get(url)
@@ -286,11 +295,11 @@ def distancia_destino(api_key, lon_destino, lat_destino, lat, lon,):
             'status_code': response.status_code
         }
 
-def lat_lon_cliente(api_key, embarque, bairro_embarque, cidade):
+def lat_lon_cliente(embarque, bairro_embarque, cidade='São Lourenço MG 37470000'):
     ''' Função para buscar a latitude e longitude do cliente '''
 
     # Construir a URL da API para buscar a latitude e longitude
-    url = f'https://us1.locationiq.com/v1/search?key={api_key}&q={embarque},{bairro_embarque},{cidade}&format=json'
+    url = f'https://us1.locationiq.com/v1/search?key={Config.API_LOCATION_KEY}&q={embarque},{bairro_embarque},{cidade}&format=json'
 
     try:
         # Fazer a requisição GET para a API
@@ -307,10 +316,7 @@ def lat_lon_cliente(api_key, embarque, bairro_embarque, cidade):
                 lon = data[0]['lon']
                 print(display_name)
                 # Retornar as coordenadas como um dicionário
-                return {
-                    'latitude': lat,
-                    'longitude': lon
-                }
+                return lat, lon
                
             else:
                 print("Nenhuma coordenada encontrada na resposta.")

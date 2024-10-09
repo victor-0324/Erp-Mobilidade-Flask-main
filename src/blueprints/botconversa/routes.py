@@ -29,39 +29,23 @@ def livre():
 @public_endpoint
 @botconversa_app.route('/corrida', methods=['POST'])
 def corrida():
-    """Envia uma corrida
-    Embarque
-    bairro_embarque
-    bairro_destino
-    telefone"""
+    """Envia uma corrida"""
     # Dados recebido no post
-    api_key = 'pk.f17234d51a1015ab3c5ecb138de627c9' 
     data_json = request.get_json()
     bairro_embarque = corrigir_bairro(data_json['bairro_embarque'])
     embarque = data_json['embarque']
-    cidade = 'São Lourenço MG 37470000'
     bairro_destino = corrigir_bairro(data_json['bairro_destino'])
     cliente_telefone = data_json['cliente_telefone']
-    sexo = data_json['prefere_sexo'] 
-    tel_motorista = data_json.get('mot_telefone') 
+    sexo = data_json['prefere_sexo']
+    tel_motorista = data_json.get('mot_telefone')
     tipo_carro = data_json['prefere_carro']
+    motorista_favorito = data_json['mot_favorito']
 
-    print(data_json)  
-    # Fila dos Motoristas cadastrado no banco
-    fila_ = [[driver.id, driver.sexo, driver.tipo_carro, driver.lat, driver.lon, driver.name, driver.telefone, driver.bairro, driver.status, driver.cliente_bloqueado, driver.hora_livre] for driver in BotQuerys().fila()]
-   
     # Busca latitude e longetude do cliente
-    busca =  lat_lon_cliente(api_key, embarque, bairro_embarque, cidade)
-    if busca:
-        lat =  busca['latitude']
-        lon =  busca['longitude']
+    lat, lon = lat_lon_cliente(embarque, bairro_embarque)
 
-    print(f" Lat e lon cliente {busca}")
-    # Busca os motorista com base nas preferencias do cliente
-    motorista = busca_motorista(api_key, bairro_embarque, tipo_carro, cliente_telefone, sexo, fila_, lon=lon, lat=lat) 
+    motorista = busca_motorista(bairro_embarque, tipo_carro, cliente_telefone, sexo, lon=lon, lat=lat) 
 
-    print(motorista)
-    # Verifica as cordenadas do destino
     cordenadas = BotQuerys().lat_lon_destino(bairro_destino)
     if cordenadas:
         lat_destino = cordenadas['latitude']
@@ -69,10 +53,10 @@ def corrida():
         tipo_destino = cordenadas['tipo_destino']
 
     # Valores da distancia e duração da corrida ate o destino
-    valores = distancia_destino(api_key, lon_destino, lat_destino, lon=lon, lat=lat) 
+    valores = distancia_destino(lon_destino, lat_destino, lon=lon, lat=lat) 
 
     # busca no banco o tipo do bairro
-    tipo_bairro =  BotQuerys().tipo_bairro_embarque(bairro_embarque)
+    tipo_bairro = BotQuerys().tipo_bairro_embarque(bairro_embarque)
 
     # tratamento do JSON para instring
     if isinstance(motorista, str):
